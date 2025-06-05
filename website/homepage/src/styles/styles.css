@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[id^="tilt-card-"] {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  position: relative;
+  overflow: visible;
+}
+
+/* Glow overlay div for mouse glow */
+[id^="glow-overlay-"] {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  /* same as card's rounded-2xl */
+  z-index: 15;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
