@@ -28,4 +28,4 @@ firmware/cansat_2026/STM32G0B1XX_FLASH.ld
 # Website project ignores
 website/homepage/node_modules/
 # Ignore build artifacts
-website/homepage/static/styles.css
+website/homepage/src/static/styles.css
