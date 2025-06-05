@@ -17,3 +17,4 @@ cd homepage
 pnpm install
 pnpm dev # This also builds the css and fixes formatting issues
 ```
+Access it at `http://localhost:3000`
