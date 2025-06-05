@@ -1,0 +1,35 @@
+{
+    "cards": [
+      {
+        "name": "Sam",
+        "role": "Hardware & Firmware Engineer",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=sam",
+        "email": "example@example.com"
+      },
+      {
+        "name": "Wannes",
+        "role": "Software Developer",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=wannes"
+      },
+      {
+        "name": "Andres",
+        "role": "Parachute Engineer",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=andres"
+      },
+      {
+        "name": "Louise",
+        "role": "Design & Social Media",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=female&seed=louise"
+      },
+      {
+        "name": "Paribes",
+        "role": "I forgot what this guy does",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=paribes"
+      },
+      {
+        "name": "Benito",
+        "role": "He has no role yet",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=benito"
+      }
+    ]
+}

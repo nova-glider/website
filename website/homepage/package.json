@@ -1,0 +1,19 @@
+{
+  "name": "novacan-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/app.js",
+    "build:css": "tailwindcss -i ./src/styles/styles.css -o ./src/static/styles.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "tailwindcss": "^3.4.17"
+  }
+}
