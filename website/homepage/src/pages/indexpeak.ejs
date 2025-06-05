@@ -1,0 +1,333 @@
+<!-- 
+  This file is part of the NovaCan project.
+ 
+  Copyright (C) 2025 NovaCan, Wannes Ghysels
+ 
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+ 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details. 
+  -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NovaCan | CanSat 2026</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</head>
+
+<body class="min-h-screen text-white select-none scroll-smooth">
+
+  <!-- Section 1: Hero -->
+  <section id="hero"
+    class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative bg-gradient-to-b from-gray-950 to-black">
+    <!-- Particles.js container -->
+    <div id="particles-js" class="absolute inset-0 w-full h-full z-0"></div>
+    <div
+      class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.05),transparent)] pointer-events-none z-10">
+    </div>
+    <h1 class="text-6xl font-extrabold text-white mb-4 drop-shadow-xl tracking-tight z-20">NovaCan</h1>
+    <p
+      class="text-2xl text-gray-300 max-w-xl backdrop-blur-md bg-white/5 px-4 py-3 rounded-xl border border-white/10 z-20">
+      Europe’s most compact CanSat project ever.
+    </p>
+    <a href="#intro"
+      class="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-300 z-20">Learn
+      More</a>
+  </section>
+
+  <!-- Section 2: Introduction -->
+  <section id="intro"
+    class="min-h-screen py-32 px-6 flex flex-col items-center justify-center text-center bg-gradient-to-b from-black via-gray-900 to-gray-950">
+    <div class="max-w-3xl backdrop-blur-md bg-white/5 p-10 rounded-2xl border border-white/10 shadow-lg">
+      <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">About Our Mission</h2>
+      <p class="text-lg text-gray-300 leading-relaxed">
+        We are a team of creative and innovative students who are trying to push the boundaries of technology and
+        design. Our goal is to create the most compact CanSat ever, using completely custom built hardware instead of
+        the modules and components that are provided by the organisation.
+      </p>
+    </div>
+    <a href="#cards"
+      class="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-300 z-20">
+      Meet our team</a>
+  </section>
+
+  <!-- Section 3: Team Cards -->
+  <section id="cards"
+    class="flex items-center justify-center p-10 bg-black relative overflow-hidden select-none">
+    <!-- Particles.js container -->
+    <div id="particles-js-cards" class="absolute inset-0 w-full h-full z-0"></div>
+
+    <!-- Title -->
+    <div
+      class="w-auto max-w-3xl mx-auto flex flex-col items-center justify-center backdrop-blur-md bg-white/5 p-10 rounded-2xl border border-white/10 shadow-lg text-center">
+      <% if (cards && cards.length) { %>
+        <h1 class="text-4xl font-bold text-white mb-1">Meet the team.</h1>
+        <p class="text-lg text-gray-300 max-w-2xl mx-auto mt-4">
+          The people behind NovaCan.
+        </p>
+        <% } else { %>
+          <h1 class="text-4xl font-bold text-white mb-2">Failed to load information.</h1>
+          <% } %>
+    </div>
+
+    <!-- Glowing balls container -->
+    <div id="glow-container" class="absolute inset-0 -z-10 overflow-hidden">
+      <div id="glow1" class="absolute rounded-full opacity-70 blur-2xl w-56 h-56 bg-purple-600"
+        style="left: 10%; top: 20%;"></div>
+      <div id="glow2" class="absolute rounded-full opacity-60 blur-2xl w-64 h-64 bg-purple-700"
+        style="left: 70%; top: 40%;"></div>
+      <div id="glow3" class="absolute rounded-full opacity-50 blur-2xl w-96 h-96 bg-purple-700"
+        style="left: 40%; top: 75%;"></div>
+    </div>
+
+    <!-- Cards grid container -->
+    <!-- <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 z-10"></div> -->
+
+    <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 z-10">
+      <% cards.forEach(function(card, i) { %>
+        <div class="w-full max-w-sm relative">
+          <div id="tilt-card-<%= i %>"
+            class="relative bg-white/10 dark:bg-white/5 backdrop-blur-lg rounded-2xl p-6 shadow-2xl border border-white/20 cursor-pointer transition-transform duration-100 will-change-transform">
+            <div id="glow-overlay-<%= i %>"></div>
+            <img src="<%= card.img %>" alt="Profile pic"
+              class="rounded-full w-24 h-24 mx-auto mb-4 shadow-lg relative z-20" />
+            <h2 class="text-xl font-bold text-center text-white relative z-20">
+              <%= card.name %>
+            </h2>
+            <p class="text-center text-blue-300 text-sm relative z-20">
+              <%= card.role %>
+            </p>
+            <button
+              class="mt-6 block mx-auto bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-300 relative z-20"
+              onclick="<%= card.email ? `contactModal('${card.name}', '${card.email}')` : `noContact('${card.name}')` %>">
+              Contact
+            </button>
+          </div>
+        </div>
+        <% }); %>
+    </div>
+
+    <!-- Custom Modal Popup -->
+    <div id="custom-modal"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 transition-opacity duration-300 opacity-0">
+      <div
+        class="bg-white/20 dark:bg-gray-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/30 p-8 max-w-xs w-full relative flex flex-col items-center">
+        <span id="custom-modal-message" class="text-white text-center text-lg font-semibold mb-6"></span>
+        <button onclick="closeModal()"
+          class="mt-6 block mx-auto bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-300 relative z-20">
+          Close
+        </button>
+        <span
+          class="absolute top-2 right-4 text-white text-2xl cursor-pointer hover:scale-125 transition-transform duration-150"
+          onclick="closeModal()">&times;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-t from-black via-gray-950 to-gray-950 text-gray-500 py-4 text-center border-t border-white/10 relative z-30">
+    <div class="max-w-2xl mx-auto flex flex-col items-center gap-2">
+      <p class="text-base font-medium tracking-wide">© 2025 NovaCan. All rights reserved.</p>
+      <p class="text-xs mt-1 text-gray-600">Made with <span class="text-pink-400">❤️</span> by the NovaCan team.</p>
+    </div>
+  </footer>
+
+  <script>
+
+    // GLOWING BALLS DRIFTING ANIMATION
+
+    const balls = [
+      document.getElementById('glow1'),
+      document.getElementById('glow2'),
+      document.getElementById('glow3'),
+    ];
+
+    const initialPositions = [
+      { left: 10, top: 20 },
+      { left: 70, top: 40 },
+      { left: 40, top: 75 },
+    ];
+
+    const driftRange = 5; // max % drift from initial position
+    let driftDirections = [
+      { x: 1, y: 1 },
+      { x: -1, y: 1 },
+      { x: 1, y: -1 },
+    ];
+
+    function drift() {
+      balls.forEach((ball, i) => {
+        let pos = initialPositions[i];
+        let dir = driftDirections[i];
+
+        // simple oscillation for movement
+        let newLeft = pos.left + dir.x * (Math.sin(Date.now() / 2000 + i) * driftRange);
+        let newTop = pos.top + dir.y * (Math.cos(Date.now() / 3000 + i) * driftRange);
+
+        // clamp values
+        newLeft = Math.min(Math.max(newLeft, 0), 100);
+        newTop = Math.min(Math.max(newTop, 0), 100);
+
+        balls[i].style.left = newLeft + '%';
+        balls[i].style.top = newTop + '%';
+      });
+
+      requestAnimationFrame(drift);
+    }
+
+    // initialize the drift animation
+    requestAnimationFrame(drift);
+
+
+    // CUSTOM MODAL FUNCTIONS
+
+    function showAlert(message) {
+      const modal = document.getElementById('custom-modal');
+      const modalMsg = document.getElementById('custom-modal-message');
+      modalMsg.textContent = message;
+      modal.classList.remove('hidden');
+      modal.classList.add('opacity-100');
+      modal.classList.add('transition-opacity');
+    }
+
+    function showAlertHTML(message) {
+      const modal = document.getElementById('custom-modal');
+      const modalMsg = document.getElementById('custom-modal-message');
+      modalMsg.innerHTML = message;
+      modal.classList.remove('hidden');
+      modal.classList.add('opacity-100');
+      modal.classList.add('transition-opacity');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('custom-modal');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('hidden');
+    }
+
+    function contactModal(name, email) {
+      let msg = "You can contact " + name + " at <a href='mailto:" + email + "' class='text-blue-400 underline hover:text-blue-300 transition-colors'>" + email + "</a>";
+      showAlertHTML(msg);
+    }
+
+    function noContact(name) {
+      let msg = "Sorry, " + name + " doesnt have any contact info yet.";
+      showAlert(msg);
+    }
+
+
+    // TILT CARDS AND GLOW EFFECT
+
+    // Card data
+    const cardsData = <%- JSON.stringify(cards) %>;
+
+    const cardsGrid = document.getElementById('cards-grid');
+
+    // Add tilt and glow effect to all cards
+    cardsData.forEach((_, i) => {
+      const card = document.getElementById(`tilt-card-${i}`);
+      const glowOverlay = document.getElementById(`glow-overlay-${i}`);
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+        const posX = (x / rect.width) * 100;
+        const posY = (y / rect.height) * 100;
+
+        glowOverlay.style.background = `
+        radial-gradient(circle at ${posX}% ${posY}%,
+          rgba(139, 92, 246, 0.5) 0%,
+          rgba(139, 92, 246, 0.15) 40%,
+          rgba(139, 92, 246, 0) 80%)
+      `;
+        glowOverlay.style.opacity = 1;
+      });
+
+      // Reset transform and glow on mouse leave
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+        glowOverlay.style.opacity = 0;
+      });
+    });
+
+    // Initialize particles.js for the hero section
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#a78bfa" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 1, "random": true },
+        "size": { "value": 4, "random": true },
+        "line_linked": { "enable": false, "distance": 150, "color": "#a78bfa", "opacity": 0.2, "width": 1 },
+        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": false, "mode": "repulse" },
+          "onclick": { "enable": false, "mode": "push" }
+        },
+        "modes": {
+          "repulse": { "distance": 100, "duration": 0.4 },
+          "push": { "particles_nb": 4 }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Initialize particles.js for the cards section
+    particlesJS("particles-js-cards", {
+      "particles": {
+        "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#a78bfa" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.7, "random": true },
+        "size": { "value": 4, "random": true },
+        "line_linked": { "enable": false, "distance": 150, "color": "#a78bfa", "opacity": 0.2, "width": 1 },
+        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": false, "mode": "repulse" },
+          "onclick": { "enable": false, "mode": "push" }
+        },
+        "modes": {
+          "repulse": { "distance": 100, "duration": 0.4 },
+          "push": { "particles_nb": 4 }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
