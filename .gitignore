@@ -24,3 +24,8 @@ firmware/cansat_2026/STM32G0B1XX_FLASH.ld
 *.kicad_prl
 *.kicad_sch-bak
 *.kicad_pcb-bak
+
+# Website project ignores
+website/homepage/node_modules/
+# Ignore build artifacts
+website/homepage/static/styles.css
