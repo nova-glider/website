@@ -1,3 +1,29 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : bme280.c
+  * @brief          : BME280 sensor driver
+  * @author         : Sam Vandenabeele
+  ******************************************************************************
+  * @attention
+  *
+  * This file is part of the NovaCan project.
+  *
+  * Copyright (C) 2025 NovaCan, Sam Vandenabeele
+  *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+  ******************************************************************************
+**/
+/* USER CODE END Header */
 #include "bme280.h"
 
 static uint8_t BME280_Read8(BME280_HandleTypedef *dev, uint8_t reg) {
