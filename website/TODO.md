@@ -11,6 +11,7 @@ Frontend:
 - [ ] React + TailwindCSS (+ Shadcn/ui) setup
 - [ ] Call API for metrics
 - [ ] ...
+
 Backend:
 - [ ] Express setup
 - [ ] Create API routes
