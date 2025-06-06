@@ -1,0 +1,16 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./db:/app/db
+
+  homepage:
+    build:
+      context: ./homepage
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
