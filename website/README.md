@@ -3,7 +3,7 @@
 This folder contains all website code, which at the time of writing is only a homepage.
 Other parts of the website, like the backend and dashboard will be added in future commits.
 
-[TO-DO.md](https://github.com/samvandenabeele/cansat_SBC_2026/blob/main/website%2FREADME.md)
+[TODO.md](https://github.com/samvandenabeele/cansat_SBC_2026/blob/main/website%2FTODO.md)
 
 ## HomePage
 
