@@ -15,38 +15,7 @@ if (!fs.existsSync("./db")) {
 }
 
 app.get("/", (req, res) => {
-  // fetch the latest sensor data and show it on the homepage
-  if (Object.keys(latestData).length === 0) {
-    console.log("No latest data found, reading from db directory...");
-    fs.readdir("./db", (err, files) => {
-      if (err) {
-        console.error("Error reading directory:", err);
-        return res.status(500).send("Error reading sensor data");
-      }
-
-      // Sort files by timestamp (assuming filenames are in the format sensor-data-YYYYMMDDHHMMSS.json)
-      files.sort((a, b) => {
-        const timeA = a.match(/sensor-data-(\d+)\.json/)[1];
-        const timeB = b.match(/sensor-data-(\d+)\.json/)[1];
-        return timeB.localeCompare(timeA); // Sort descending
-      });
-
-      if (files.length > 0) {
-        fs.readFile(`./db/${files[0]}`, "utf8", (err, data) => {
-          if (err) {
-            console.error("Error reading file:", err);
-            return res.status(500).send("Error reading sensor data");
-          }
-          latestData = JSON.parse(data);
-          res.send("Latest Sensor Data:\n" + JSON.stringify(latestData));
-        });
-      } else {
-        res.send("No sensor data available.");
-      }
-    });
-  } else {
-    res.send("Latest Sensor Data:\n" + JSON.stringify(latestData));
-  }
+  res.send("Backend operational.")
 });
 
 // TODO:
