@@ -29,4 +29,4 @@ firmware/cansat_2026/STM32G0B1XX_FLASH.ld
 website/homepage/node_modules/
 website/backend/node_modules/
 website/homepage/src/static/styles.css
-website/backend/src/db/
+website/backend/db/
