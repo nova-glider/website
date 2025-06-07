@@ -1,45 +1,39 @@
-FROM node:20
+# Use multi-stage for smaller final image
+FROM node:20-slim AS builder
 
-# Set working directory
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 WORKDIR /app
 
-# Copy source files and app.js
-COPY package.json ./package.json
-COPY package-lock.json ./package-lock.json
-COPY pnpm-lock.yaml ./pnpm-lock.yaml
-COPY tailwind.config.js ./tailwind.config.js
-COPY src/ ./src/
-
-# Install pnpm globally
-RUN npm install -g pnpm
+# Copy only package files first for better caching
+COPY package.json pnpm-lock.yaml ./
+COPY tailwind.config.js ./
 
 # Install dependencies
 RUN pnpm install
 
-# Expose port defined by PORT env variable, default to 3000
+# Copy source files after dependencies
+COPY src ./src
+
+# --- Production image ---
+FROM node:20-slim AS runner
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+WORKDIR /app
+
+# Copy installed dependencies and source from builder
+COPY --from=builder /app /app
+
+# Use a non-root user for security
+RUN useradd --user-group --create-home --shell /bin/false appuser
+USER appuser
+
 ARG PORT=3000
 ENV PORT=${PORT}
 EXPOSE ${PORT}
 
-# Start the app
 CMD ["pnpm", "dev"]
-
-# Build the Docker image with:
-# docker build -t novacan-site .
-
-# DO NOT USE VOLUMES, THEY DONT WORK YET!
-# Link src/data with the host (mount as volume at runtime)
-# To mount src/data as a volume from the host, use the following in your docker-compose.yml:
-# This isnt required if you want to use the default data.
-# 
-#   volumes:
-#     - ./src/data:/app/src/data
-
-#   Example docker-compose service:
-#   services:
-#     app:
-#       image: novacan-site
-#       ports:
-#         - "3000:3000"
-#       volumes:
-#         - ./src/data:/app/src/data
