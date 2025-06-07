@@ -34,7 +34,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include "core_cm0plus.h" // For ITM_SendChar, adjust if using a different Cortex-M core
+#include "nmea_parse.h"
+#include "nmea_parse.c"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +56,8 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef hlpuart2;
+DMA_HandleTypeDef hdma_lpuart1_rx;
+DMA_HandleTypeDef hdma_lpuart2_rx;
 
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
@@ -64,33 +67,36 @@ SPI_HandleTypeDef hspi3;
 BME280_HandleTypedef bme280;
 BME280_Data bme280_data;
 
+#define RxBuffer_SIZE 64  //configure uart receive buffer size
+#define DataBuffer_SIZE 512 //gather a few rxBuffer frames before parsing
+
+// Functions for UART receiving, based on the DMA receive function, implementations may vary
+uint16_t oldPos = 0;
+uint16_t newPos = 0;
+uint8_t RxBuffer[RxBuffer_SIZE];
+uint8_t DataBuffer[DataBuffer_SIZE];
+
+//create a GPS data structure
+GPS myData;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_LPUART1_UART_Init(void);
 static void MX_LPUART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+void myprintf(const char *fmt, ...);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void myprintf(const char *fmt, ...) {
-  static char buffer[256];
-  va_list args;
-  va_start(args, fmt);
-  vsnprintf(buffer, sizeof(buffer), fmt, args);
-  va_end(args);
-
-  int len = strlen(buffer);
-  HAL_UART_Transmit(&hlpuart2, (uint8_t*)buffer, len, -1);
-
-}
 /* USER CODE END 0 */
 
 /**
@@ -101,7 +107,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -117,11 +123,12 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
   MX_SPI3_Init();
@@ -134,27 +141,27 @@ int main(void)
   bme280.hspi = &hspi3; // Assuming hspi1 is used for BME280
   bme280.cs_port = GPIOB; // Assuming CS pin is on GPIOB
   bme280.cs_pin = GPIO_PIN_6; // Assuming CS pin is PB6
-
+  
   HAL_Delay(1000);
-
+  
   FATFS FatFs; 	//Fatfs handle
   FIL fil; 		//File handle
   FRESULT fres;
-
+  
   fres = f_mount(&FatFs, "", 1); //1=mount now
   if (fres != FR_OK) {
-	  myprintf("f_mount error (%i)\r\n", fres);
+    myprintf("f_mount error (%i)\r\n", fres);
 	  while(1);
   }
-
+  
   //Now let's try and write a file "write.txt"
   fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_CREATE_ALWAYS);
   if(fres == FR_OK) {
-	  myprintf("I was able to open 'write.txt' for writing\r\n");
+    myprintf("I was able to open 'write.txt' for writing\r\n");
   } else {
-	  myprintf("f_open error (%i)\r\n", fres);
+    myprintf("f_open error (%i)\r\n", fres);
   }
-
+  
   BYTE readBuf[20];
   UINT bytesWrote;
   /* USER CODE END 2 */
@@ -164,12 +171,20 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    
-    /* USER CODE BEGIN 3 */
-    BME280_ReadData(&bme280, &bme280_data);
-    snprintf((char*)readBuf, sizeof(readBuf), "%.2f,%.2f", bme280_data.temperature, bme280_data.humidity);
-    RFM98_Transmit((uint8_t *)&readBuf, sizeof(readBuf));
 
+    /* USER CODE BEGIN 3 */
+    nmea_parse(&myData, DataBuffer);
+
+    if(myData.fix == 1){ //if the GPS has a fix, print the data
+      char * str = (char*)malloc(sizeof(char)*200);
+      BME280_ReadData(&bme280, &bme280_data);
+      sprintf(str, "\r\n%f %c, %f %c, %f, %d, %f, %f, %f\r\n",
+              myData.latitude, myData.latSide, myData.longitude, myData.lonSide, myData.altitude, myData.satelliteCount, myData.hdop, bme280_data.temperature, bme280_data.humidity);
+      free(str);
+      RFM98_Transmit((uint8_t *)&str, sizeof(str));
+    }
+
+    
     // Use bme_data.temperature, .pressure, .humidity
     fres = f_write(&fil, readBuf, sizeof(readBuf), &bytesWrote);
     f_sync(&fil);
@@ -181,7 +196,7 @@ int main(void)
   }
   //Be a tidy kiwi - don't forget to close your file!
   f_close(&fil);
-
+  
   //We're done, so de-mount the drive
   f_mount(NULL, "", 0);
   /* USER CODE END 3 */
@@ -236,11 +251,11 @@ static void MX_LPUART1_UART_Init(void)
 {
 
   /* USER CODE BEGIN LPUART1_Init 0 */
-
+  
   /* USER CODE END LPUART1_Init 0 */
 
   /* USER CODE BEGIN LPUART1_Init 1 */
-
+  
   /* USER CODE END LPUART1_Init 1 */
   hlpuart1.Instance = LPUART1;
   hlpuart1.Init.BaudRate = 209700;
@@ -284,7 +299,7 @@ static void MX_LPUART2_UART_Init(void)
 {
 
   /* USER CODE BEGIN LPUART2_Init 0 */
-
+  
   /* USER CODE END LPUART2_Init 0 */
 
   /* USER CODE BEGIN LPUART2_Init 1 */
@@ -318,7 +333,7 @@ static void MX_LPUART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN LPUART2_Init 2 */
-
+  
   /* USER CODE END LPUART2_Init 2 */
 
 }
@@ -332,11 +347,11 @@ static void MX_SPI1_Init(void)
 {
 
   /* USER CODE BEGIN SPI1_Init 0 */
-
+  
   /* USER CODE END SPI1_Init 0 */
 
   /* USER CODE BEGIN SPI1_Init 1 */
-
+  
   /* USER CODE END SPI1_Init 1 */
   /* SPI1 parameter configuration*/
   hspi1.Instance = SPI1;
@@ -358,7 +373,7 @@ static void MX_SPI1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN SPI1_Init 2 */
-
+  
   /* USER CODE END SPI1_Init 2 */
 
 }
@@ -372,11 +387,11 @@ static void MX_SPI2_Init(void)
 {
 
   /* USER CODE BEGIN SPI2_Init 0 */
-
+  
   /* USER CODE END SPI2_Init 0 */
 
   /* USER CODE BEGIN SPI2_Init 1 */
-
+  
   /* USER CODE END SPI2_Init 1 */
   /* SPI2 parameter configuration*/
   hspi2.Instance = SPI2;
@@ -398,7 +413,7 @@ static void MX_SPI2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN SPI2_Init 2 */
-
+  
   /* USER CODE END SPI2_Init 2 */
 
 }
@@ -416,7 +431,7 @@ static void MX_SPI3_Init(void)
   /* USER CODE END SPI3_Init 0 */
 
   /* USER CODE BEGIN SPI3_Init 1 */
-
+  
   /* USER CODE END SPI3_Init 1 */
   /* SPI3 parameter configuration*/
   hspi3.Instance = SPI3;
@@ -444,6 +459,25 @@ static void MX_SPI3_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+  /* DMA1_Channel2_3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel2_3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel2_3_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -452,7 +486,7 @@ static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE BEGIN MX_GPIO_Init_1 */
-
+   
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
@@ -482,12 +516,42 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
-
+  
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+void myprintf(const char *fmt, ...) {
+  static char buffer[256];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
 
+  int len = strlen(buffer);
+  HAL_UART_Transmit(&hlpuart1, (uint8_t*)buffer, len, -1);
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+  oldPos = newPos; //keep track of the last position in the buffer
+  if(oldPos + Size > DataBuffer_SIZE){ //if the buffer is full, parse it, then reset the buffer
+
+    uint16_t datatocopy = DataBuffer_SIZE-oldPos;  // find out how much space is left in the main buffer
+    memcpy ((uint8_t *)DataBuffer+oldPos, RxBuffer, datatocopy);  // copy data in that remaining space
+
+    oldPos = 0;  // point to the start of the buffer
+    memcpy ((uint8_t *)DataBuffer, (uint8_t *)RxBuffer+datatocopy, (Size-datatocopy));  // copy the remaining data
+    newPos = (Size-datatocopy);  // update the position
+  }
+  else{
+    memcpy((uint8_t *)DataBuffer+oldPos, RxBuffer, Size); //copy received data to the buffer
+    newPos = Size+oldPos; //update buffer position
+
+  }
+  HAL_UARTEx_ReceiveToIdle_DMA(&hlpuart2, (uint8_t *)RxBuffer, RxBuffer_SIZE); //re-enable the DMA interrupt
+  __HAL_DMA_DISABLE_IT(&hdma_lpuart2_rx, DMA_IT_HT); //disable the half transfer interrupt
+}
 /* USER CODE END 4 */
 
 /**
