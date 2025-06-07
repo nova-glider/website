@@ -1,26 +1,38 @@
-FROM node:20
+# Use multi-stage for smaller final image
+FROM node:20-slim AS builder
 
-# Set working directory
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 WORKDIR /app
 
-# Copy source files and app.js
-COPY package.json ./package.json
-COPY pnpm-lock.yaml ./pnpm-lock.yaml
-COPY src/ ./src/
-
-# Install pnpm globally
-RUN npm install -g pnpm
+# Copy only package files first for better caching
+COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
 RUN pnpm install
 
-# Expose port defined by PORT env variable, default to 3000
+# Copy source files after dependencies
+COPY src ./src
+
+# --- Production image ---
+FROM node:20-slim AS runner
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+WORKDIR /app
+
+# Copy installed dependencies and source from builder
+COPY --from=builder /app /app
+
+# Use a non-root user for security
+RUN useradd --user-group --create-home --shell /bin/false appuser
+USER appuser
+
 ARG PORT=3000
 ENV PORT=${PORT}
 EXPOSE ${PORT}
 
-# Start the app
 CMD ["pnpm", "dev"]
-
-# Build the Docker image with:
-# docker build -t novacan-backend .
