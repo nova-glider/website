@@ -3,7 +3,8 @@ FROM node:20-slim AS builder
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+RUN corepack enable 
+# && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
@@ -21,6 +22,8 @@ FROM node:20-slim AS runner
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable 
+# && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
@@ -31,8 +34,7 @@ COPY --from=builder /app /app
 RUN useradd --user-group --create-home --shell /bin/false appuser
 USER appuser
 
-ARG PORT=3000
-ENV PORT=${PORT}
-EXPOSE ${PORT}
+ENV PORT=3000
+EXPOSE 3000
 
 CMD ["pnpm", "dev"]
