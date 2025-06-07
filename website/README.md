@@ -3,7 +3,7 @@
 This folder contains all website code, which at the time of writing is only the homepage and backend.
 Other parts of the website, like the dashboard will be added in future commits.
 
-[TODO.md](https://github.com/samvandenabeele/cansat_SBC_2026/blob/main/website%2FTODO.md)
+[TODO.md](https://github.com/samvandenabeele/cansat_SBC_2026/blob/main/website%2FTODO.md) | [deployment guide](https://github.com/samvandenabeele/cansat_SBC_2026/blob/main/website%2Fdeployment.md)
 
 ## HomePage
 
@@ -11,33 +11,11 @@ Other parts of the website, like the dashboard will be added in future commits.
 
 NodeJS + Express + TailwindCSS
 
-Installation instructions:
-```bash
-git clone https://github.com/samvandenabeele/cansat_SBC_2026
-cd website
-cd homepage
-pnpm install
-pnpm dev # This also builds the css and fixes formatting issues
-```
-Access it at `http://localhost:3000`
-
----
-
 ## BackEnd
 
 `/backend`
 
 NodeJS + Express
-
-Installation instructions:
-```bash
-git clone https://github.com/samvandenabeele/cansat_SBC_2026
-cd website
-cd backend
-pnpm install
-pnpm dev
-```
-Access it at `http://localhost:3000`
 
 #### API Usage
 
