@@ -135,61 +135,17 @@ int main(void)
   bme280.cs_port = GPIOB; // Assuming CS pin is on GPIOB
   bme280.cs_pin = GPIO_PIN_6; // Assuming CS pin is PB6
 
-  myprintf("\r\n~ SD card demo by kiwih ~\r\n\r\n");
+  HAL_Delay(1000);
 
-  HAL_Delay(1000); //a short delay is important to let the SD card settle
-
-  //some variables for FatFs
   FATFS FatFs; 	//Fatfs handle
   FIL fil; 		//File handle
-  FRESULT fres; //Result after operations
+  FRESULT fres;
 
-  //Open the file system
   fres = f_mount(&FatFs, "", 1); //1=mount now
   if (fres != FR_OK) {
-	myprintf("f_mount error (%i)\r\n", fres);
-	while(1);
-  }
-
-  //Let's get some statistics from the SD card
-  DWORD free_clusters, free_sectors, total_sectors;
-
-  FATFS* getFreeFs;
-
-  fres = f_getfree("", &free_clusters, &getFreeFs);
-  if (fres != FR_OK) {
-	  myprintf("f_getfree error (%i)\r\n", fres);
+	  myprintf("f_mount error (%i)\r\n", fres);
 	  while(1);
   }
-
-  //Formula comes from ChaN's documentation
-  total_sectors = (getFreeFs->n_fatent - 2) * getFreeFs->csize;
-  free_sectors = free_clusters * getFreeFs->csize;
-
-  myprintf("SD card stats:\r\n%10lu KiB total drive space.\r\n%10lu KiB available.\r\n", total_sectors / 2, free_sectors / 2);
-
-  //Now let's try to open file "test.txt"
-  fres = f_open(&fil, "test.txt", FA_READ);
-  if (fres != FR_OK) {
-	  myprintf("f_open error (%i)\r\n", fres);
-	  while(1);
-  }
-  myprintf("I was able to open 'test.txt' for reading!\r\n");
-
-  //Read 30 bytes from "test.txt" on the SD card
-  BYTE readBuf[30];
-
-  //We can either use f_read OR f_gets to get data out of files
-  //f_gets is a wrapper on f_read that does some string formatting for us
-  TCHAR* rres = f_gets((TCHAR*)readBuf, 30, &fil);
-  if(rres != 0) {
-	  myprintf("Read string from 'test.txt' contents: %s\r\n", readBuf);
-  } else {
-	  myprintf("f_gets error (%i)\r\n", fres);
-  }
-
-  //Be a tidy kiwi - don't forget to close your file!
-  f_close(&fil);
 
   //Now let's try and write a file "write.txt"
   fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_CREATE_ALWAYS);
@@ -199,37 +155,35 @@ int main(void)
 	  myprintf("f_open error (%i)\r\n", fres);
   }
 
-  //Copy in a string
-  strncpy((char*)readBuf, "a new file is made!", 19);
+  BYTE readBuf[20];
   UINT bytesWrote;
-  fres = f_write(&fil, readBuf, 19, &bytesWrote);
-  if(fres == FR_OK) {
-	  myprintf("Wrote %i bytes to 'write.txt'!\r\n", bytesWrote);
-  } else {
-	myprintf("f_write error (%i)\r\n", fres);
-  }
-
-  //Be a tidy kiwi - don't forget to close your file!
-  f_close(&fil);
-
-  //We're done, so de-mount the drive
-  f_mount(NULL, "", 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if (BME280_Init(&bme280)) {
-      break;
-    }
     /* USER CODE END WHILE */
-
+    
     /* USER CODE BEGIN 3 */
+    BME280_ReadData(&bme280, &bme280_data);
+    snprintf((char*)readBuf, sizeof(readBuf), "%.2f,%.2f", bme280_data.temperature, bme280_data.humidity);
+    RFM98_Transmit((uint8_t *)&readBuf, sizeof(readBuf));
+
+    // Use bme_data.temperature, .pressure, .humidity
+    fres = f_write(&fil, readBuf, sizeof(readBuf), &bytesWrote);
+    f_sync(&fil);
+    if(fres == FR_OK) {
+      myprintf("Wrote %i bytes to 'write.txt'!\r\n", bytesWrote);
+    } else {
+      myprintf("f_write error (%i)\r\n", fres);
+    }
   }
-  BME280_ReadData(&bme280, &bme280_data);
-  RFM98_Transmit((uint8_t *)&bme280_data.temperature, sizeof(bme280_data.temperature));
-      // Use bme_data.temperature, .pressure, .humidity
+  //Be a tidy kiwi - don't forget to close your file!
+  f_close(&fil);
+
+  //We're done, so de-mount the drive
+  f_mount(NULL, "", 0);
   /* USER CODE END 3 */
 }
 
