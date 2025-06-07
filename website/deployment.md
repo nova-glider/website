@@ -18,6 +18,9 @@ docker compose up -d
 ---
 
 ### Manual
+> [!WARNING]  
+> You need to manually set the ports for homepage and backend to be different.
+
 Homepage
 ```bash
 git clone https://github.com/samvandenabeele/cansat_SBC_2026
@@ -37,5 +40,3 @@ cd backend
 pnpm install
 pnpm dev
 ```
-- Homepage: `http://localhost:3000`
-- Backend (API): `http://localhost:3001`
