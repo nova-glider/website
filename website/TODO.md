@@ -10,6 +10,7 @@ A list of features/fixes that need to be done.
 Frontend:
 - [ ] React + TailwindCSS (+ Shadcn/ui) setup
 - [ ] Call API for metrics
+- [ ] (Livestream?)
 - [ ] ...
 
 Backend:
