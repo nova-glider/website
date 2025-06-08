@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-runner
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+    volumes:
+      - ./db:/backend/db
+    restart: unless-stopped
+
+  homepage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: homepage-runner
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    restart: unless-stopped
