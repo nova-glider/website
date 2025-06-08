@@ -16,8 +16,8 @@ jobs:
               username: ${{ secrets.DOCKERHUB_USERNAME }}
               password: ${{ secrets.DOCKERHUB_TOKEN }}
           - name: Build the Docker image
-            working-directory: docker
+            working-directory: website
             run: docker build -t samvandenabeele09/novacan:pr-${{ github.event.pull_request.number }} .
           - name: Push new docker image
-            working-directory: docker
+            working-directory: website
             run: docker push samvandenabeele09/novacan:pr-${{ github.event.pull_request.number }}
