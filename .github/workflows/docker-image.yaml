@@ -3,6 +3,7 @@ name: Docker Image CI
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
     build:
@@ -17,7 +18,9 @@ jobs:
               password: ${{ secrets.DOCKERHUB_TOKEN }}
           - name: Build the Docker image
             working-directory: website
-            run: docker build -t samvandenabeele09/novacan:pr-${{ github.event.pull_request.number }} .
+            run: docker build -t samvandenabeele09/novacan:pr-latest .
           - name: Push new docker image
             working-directory: website
-            run: docker push samvandenabeele09/novacan:pr-${{ github.event.pull_request.number }}
+            run: docker push samvandenabeele09/novacan:pr-latest
+          - name: logout from Docker Hub
+            run: docker logout
