@@ -3,8 +3,7 @@
 This repo contains all website code, which at the time of writing is only the homepage and backend.
 Other parts of the website, like the dashboard will be added in future commits.
 
-[TODO.md](https://github.com/nova-can/website/blob/w
-main/TODO.md) | [deployment guide](https://github.com/nova-can/website/blob/main/deployment.md)
+[TODO.md](https://github.com/nova-can/website/blob/main/TODO.md) | [deployment guide](https://github.com/nova-can/website/blob/main/deployment.md)
 
 ## HomePage
 
