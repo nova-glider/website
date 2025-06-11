@@ -7,8 +7,7 @@ How to actually deploy for 'production' (theres only a development command but t
 Make sure you have git+docker installed
 
 ```bash
-git clone https https://github.com/samvandenabeele/cansat_SBC_2026
-cd cansat_SBC_2026
+git clone https https://github.com/nova-can/website
 cd website
 docker compose up -d
 ```
@@ -23,8 +22,7 @@ docker compose up -d
 
 Homepage
 ```bash
-git clone https://github.com/samvandenabeele/cansat_SBC_2026
-cd cansat_SBC_2026
+git clone https://github.com/nova-can/website
 cd website
 cd homepage
 pnpm install
@@ -33,8 +31,7 @@ pnpm dev # This also builds the css and fixes formatting issues
 
 Backend
 ```bash
-git clone https://github.com/samvandenabeele/cansat_SBC_2026
-cd cansat_SBC_2026
+git clone https://github.com/nova-can/website
 cd website
 cd backend
 pnpm install
