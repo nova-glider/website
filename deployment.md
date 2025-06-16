@@ -9,6 +9,7 @@ Make sure you have git+docker installed
 ```bash
 git clone https https://github.com/nova-can/website
 cd website
+mv docker-compose-<example|prod>.yml compose.yml
 docker compose up -d
 ```
 - Homepage: `http://localhost:3000`
