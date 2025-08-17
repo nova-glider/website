@@ -4,6 +4,8 @@ How to actually deploy for 'production' (theres only a development command but t
 
 ### Docker (highly recommended)
 
+the docker compose is outdated right now 🥲:
+
 Make sure you have git+docker installed
 
 ```bash
