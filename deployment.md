@@ -32,8 +32,7 @@ pnpm dev # This also builds the css and fixes formatting issues
 
 Backend
 ```bash
-git clone https://github.com/nova-can/website
-cd website
+git clone https://github.com/nova-can/backend
 cd backend
 pnpm install
 pnpm dev
