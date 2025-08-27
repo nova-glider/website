@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import { toast } from "sonner";
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 import {
   AlertDialog,
@@ -20,14 +20,14 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Toaster } from "@/components/ui/sonner"; // make sure to import from components/ui and not sonner directly
 
 export default function Home() {
-
   const router = useRouter();
 
   const promise = () =>
-    new Promise((resolve) => setTimeout(() => resolve({ name: 'timeout' }), 500))
-      .then(() => {
-        router.push("/live");
-      });
+    new Promise((resolve) =>
+      setTimeout(() => resolve({ name: "timeout" }), 500)
+    ).then(() => {
+      router.push("/live");
+    });
 
   return (
     <div>
@@ -53,11 +53,13 @@ export default function Home() {
 
         <Button
           variant="outline"
-          onClick={() => toast.promise(promise, {
-            loading: "Loading...",
-            success: "Redirecting to dashboard!",
-            error: "Failed to load dashboard."
-          })}
+          onClick={() =>
+            toast.promise(promise, {
+              loading: "Loading...",
+              success: "Redirecting to dashboard!",
+              error: "Failed to load dashboard.",
+            })
+          }
         >
           Enter Dashboard
         </Button>
