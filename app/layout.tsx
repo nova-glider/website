@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NovaCan Dashboard",
-  description: "Live NovaCan satellite statistics dashboard.",
+  title: "NovaGlider Dashboard",
+  description: "Live NovaGlider satellite statistics dashboard.",
 };
 
 export default function RootLayout({
