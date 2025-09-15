@@ -1,32 +1,6 @@
 .vscode/
 
-firmware/cansat_2026/build/
-firmware/cansat_2026/cmake/
-firmware/cansat_2026/Drivers/
-firmware/cansat_2026/Middlewares/
-firmware/cansat_2026/.mxproject
-firmware/cansat_2026/cansat_2026.ioc
-firmware/cansat_2026/CMakeLists.txt
-firmware/cansat_2026/CMakePresets.json
-firmware/cansat_2026/startup_stm32g0b1xx.s
-firmware/cansat_2026/STM32G0B1XX_FLASH.ld
-
-# KiCad project ignores
-*.bak
-*.bck
-*.kicad_pcb-bak
-*.tmp
-*.tmp-bak
-*.dcm
-*.net
-*.xml
-*.sch-bak
-*.kicad_prl
-*.kicad_sch-bak
-*.kicad_pcb-bak
-
 # Website project ignores
-website/homepage/node_modules/
-website/backend/node_modules/
-website/homepage/src/static/styles.css
-website/backend/db/
+homepage/node_modules/
+backend/node_modules/
+homepage/src/static/styles.css
