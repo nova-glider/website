@@ -14,7 +14,7 @@
       {
         "name": "Andres",
         "role": "Parachute Engineer",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=andres"
+        "img": "/andres.jpeg"
       },
       {
         "name": "Louise",
@@ -22,14 +22,14 @@
         "img": "https://xsgames.co/randomusers/avatar.php?g=female&seed=louise"
       },
       {
-        "name": "Paribes",
-        "role": "I forgot what this guy does",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=paribes"
+        "name": "Remi",
+        "role": "Design & Social Media",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=female&seed=remi"
       },
       {
-        "name": "Benito",
-        "role": "He has no role yet",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=benito"
+        "name": "Gust",
+        "role": "Embedded Software Engineer",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=gust"
       }
     ]
 }
