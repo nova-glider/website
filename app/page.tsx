@@ -38,7 +38,7 @@ export default function Home() {
             <AlertDialogHeader>
               <AlertDialogTitle>Warning</AlertDialogTitle>
               <AlertDialogDescription>
-                The NovaCan dashboard is under heavy development and might
+                The NovaGlider dashboard is under heavy development and might
                 contain hella bugs.
               </AlertDialogDescription>
             </AlertDialogHeader>
