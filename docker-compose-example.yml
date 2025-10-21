@@ -1,15 +1,15 @@
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3001"
-    environment:
-      - PORT=3001
-    volumes:
-      - ./db:/app/db
-    restart: unless-stopped
+  #backend:
+  #  build:
+  #    context: ./backend
+  #    dockerfile: Dockerfile
+  #  ports:
+  #    - "3001:3001"
+  #  environment:
+  #    - PORT=3001
+  #  volumes:
+  #    - ./db:/app/db
+  #  restart: unless-stopped
 
   homepage:
     build:
