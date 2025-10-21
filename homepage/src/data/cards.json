@@ -3,8 +3,7 @@
       {
         "name": "Sam",
         "role": "Hardware & Firmware Engineer",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=sam",
-        "email": "example@example.com"
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=sam"
       },
       {
         "name": "Wannes",
@@ -14,12 +13,15 @@
       {
         "name": "Andres",
         "role": "Parachute Engineer",
-        "img": "/andres.jpeg"
+        "img": "/andres.jpeg",
+        "email": "andres.de.pauw@telenet.be",
+        "phone": "REDACTED"
       },
       {
         "name": "Louise",
         "role": "Design & Social Media",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=female&seed=louise"
+        "img": "/louise.jpeg",
+        "email": "louise@bieststraat.be"
       },
       {
         "name": "Remi",
@@ -29,7 +31,12 @@
       {
         "name": "Gust",
         "role": "Embedded Software Engineer",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=gust"
+        "img": "/gust.jpeg"
+      },
+      {
+        "name": "Victor",
+        "role": "Aerospace Engineer",
+        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=victor"
       }
     ]
 }
