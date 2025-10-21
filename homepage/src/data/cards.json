@@ -8,7 +8,9 @@
       {
         "name": "Wannes",
         "role": "Software Developer",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=wannes"
+        "img": "/wannes.jpeg",
+        "email": "wannes@promoozz.com",
+        "discord": "@wxnnvs"
       },
       {
         "name": "Andres",
@@ -36,7 +38,7 @@
       {
         "name": "Victor",
         "role": "Aerospace Engineer",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=victor"
+        "img": "/victor.jpeg"
       }
     ]
 }
