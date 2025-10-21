@@ -7,7 +7,7 @@ How to actually deploy for 'production' (theres only a development command but t
 Make sure you have git+docker installed
 
 ```bash
-git clone https https://github.com/nova-glider/website
+git clone https://github.com/nova-glider/website
 cd website
 mv docker-compose-example.yml compose.yml
 docker compose up -d
