@@ -3,7 +3,7 @@
       {
         "name": "Sam",
         "role": "Hardware & Firmware Engineer",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=male&seed=sam"
+        "img": "/default.png"
       },
       {
         "name": "Wannes",
@@ -28,7 +28,7 @@
       {
         "name": "Remi",
         "role": "Design & Social Media",
-        "img": "https://xsgames.co/randomusers/avatar.php?g=female&seed=remi"
+        "img": "/default.png"
       },
       {
         "name": "Gust",
