@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import ErrorComponent from "@/components/ui/error-component";
 
 const chartConfigAltitude = {
   altitude: {
@@ -52,10 +53,13 @@ export default function Live() {
       .then(setLatestData)
       .catch((error) => {
         console.error("Failed to fetch latest data:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   return (
     <div>
@@ -73,15 +77,15 @@ export default function Live() {
       <div className="fixed bottom-25 left-1/2 -translate-x-1/2 z-50 flex justify-center">
         <Button
           onClick={() => {
-        setLoading(true);
-        getLatestData()
-          .then(setLatestData)
-          .catch((error) => {
-            console.error("Failed to fetch latest data:", error);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
+            setLoading(true);
+            getLatestData()
+              .then(setLatestData)
+              .catch((error) => {
+                console.error("Failed to fetch latest data:", error);
+              })
+              .finally(() => {
+                setLoading(false);
+              });
           }}
           disabled={loading}
         >
@@ -99,14 +103,14 @@ export default function Live() {
             <CardDescription>
               The height of the cansat over time.
             </CardDescription>
-            <CardAction>
-              
-            </CardAction>
+            <CardAction></CardAction>
           </CardHeader>
           <CardContent>
-            {latestData && latestData.length > 0 ? (
+            {loading ? (
+              <Skeleton className="w-full aspect-video h-44 mb-3" />
+            ) : latestData && latestData.length > 0 ? (
               <ChartContainer
-                className="aspect-video h-45"
+                className="w-full aspect-video h-44 mb-3"
                 config={chartConfigAltitude}
               >
                 <AreaChart
@@ -141,7 +145,7 @@ export default function Live() {
                 </AreaChart>
               </ChartContainer>
             ) : (
-              <Skeleton className="w-full aspect-video h-44 mb-3" />
+              <ErrorComponent className="w-full aspect-video h-44 mb-3" />
             )}
           </CardContent>
           {/* <CardFooter>
@@ -156,9 +160,11 @@ export default function Live() {
             <CardAction></CardAction>
           </CardHeader>
           <CardContent>
-            {latestData && latestData.length > 0 ? (
+            {loading ? (
+              <Skeleton className="w-full aspect-video h-44 mb-3" />
+            ) : latestData && latestData.length > 0 ? (
               <ChartContainer
-                className="aspect-video h-45"
+                className="w-full aspect-video h-44 mb-3"
                 config={chartConfigTemperature}
               >
                 <AreaChart
@@ -193,7 +199,7 @@ export default function Live() {
                 </AreaChart>
               </ChartContainer>
             ) : (
-              <Skeleton className="w-full aspect-video h-44 mb-3" />
+              <ErrorComponent className="w-full aspect-video h-44 mb-3" />
             )}
           </CardContent>
           {/* <CardFooter>

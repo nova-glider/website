@@ -19,11 +19,10 @@ export function readTimeStamp(timestamp: string | number | Date) {
 }
 
 export async function getLatestData() {
-  // fetch latest data from api without cache
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sensor-data/get/all`, {
     cache: "no-store"
   });
-  // it responds with an array where each element is a json object
   const data = await res.json();
   const first4DataPoints = Array.isArray(data) ? data.slice(0, 4) : [];
   let dataToShow = [];
