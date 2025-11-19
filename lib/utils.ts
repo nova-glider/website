@@ -20,18 +20,24 @@ export function readTimeStamp(timestamp: string | number | Date) {
 
 export async function getLatestData() {
   // fetch latest data from api without cache
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sensor-data/get`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sensor-data/get/all`, {
     cache: "no-store"
   });
+  // it responds with an array where each element is a json object
   const data = await res.json();
-  console.log(res);
-  console.log("Fetched latest data:", data);
+  const first4DataPoints = Array.isArray(data) ? data.slice(0, 4) : [];
+  let dataToShow = [];
 
-  return [{
-    timestamp: data.timestamp,
-    altitude: data.location.altitude,
-    temperature: data.readings.temperature_celsius,
-  }];
+  for (let i = 0; i < first4DataPoints.length; i++) {
+    // add each data points timestamp, location.altitude, readings.temperature_celsius to dataToShow
+    dataToShow.push({
+      timestamp: first4DataPoints[i].timestamp,
+      altitude: first4DataPoints[i].location.altitude,
+      temperature: first4DataPoints[i].readings.temperature_celsius
+    });
+  }
+
+  return dataToShow;
 }
 
 // Helper function to pause execution for a given time in ms
