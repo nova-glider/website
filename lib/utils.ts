@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { time } from "console";
 import { twMerge } from "tailwind-merge";
 
 // const API_URL = process.env.API_URL;
@@ -18,27 +19,19 @@ export function readTimeStamp(timestamp: string | number | Date) {
 }
 
 export async function getLatestData() {
-  // fetch latest data from api
-  // const response = await fetch(`${API_URL}/sensor-data/get`);
-  // if (!response.ok) {
-  //   throw new Error("Failed to fetch latest data");
-  // }
-  // return response.json();
-
-  await pause(1000);
-  const now = new Date();
-  const intervalMs = 20 * 60 * 1000; // 20 minutes in milliseconds
-  let altitude = 100 + Math.floor(Math.random() * 11) - 5; // start around 100 (+-5)
-  return Array.from({ length: 4 }).map((_, i) => {
-    if (i > 0) {
-      altitude -= Math.floor(Math.random() * 16) + 10; // decrease by 10-25
-    }
-    return {
-      timestamp: new Date(now.getTime() + i * intervalMs).toISOString(),
-      altitude: altitude,
-      temperature: 20 + Math.floor(Math.random() * 11) - 5, // start around 20 (+-5)
-    };
+  // fetch latest data from api without cache
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sensor-data/get`, {
+    cache: "no-store"
   });
+  const data = await res.json();
+  console.log(res);
+  console.log("Fetched latest data:", data);
+
+  return [{
+    timestamp: data.timestamp,
+    altitude: data.location.altitude,
+    temperature: data.readings.temperature_celsius,
+  }];
 }
 
 // Helper function to pause execution for a given time in ms

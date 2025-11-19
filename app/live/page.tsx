@@ -41,8 +41,8 @@ const chartConfigTemperature = {
 
 export default function Live() {
   type AltitudeData = {
-    timestamp: string | number;
-    altitude: number;
+    timestamp: string | number | any;
+    altitude: number | any;
     [key: string]: unknown;
   };
   const [latestData, setLatestData] = useState<AltitudeData[]>([]);
