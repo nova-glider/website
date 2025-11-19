@@ -1,5 +1,4 @@
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import Link from "next/dist/client/link";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ErrorComponentProps {
   className?: string;
@@ -7,7 +6,7 @@ interface ErrorComponentProps {
 
 const networkError = (
   <p>
-    We couldn't reach the API, <br />
+    We couldn&apos;t reach the API, <br />
     please check if you have an internet connection.
   </p>
 );

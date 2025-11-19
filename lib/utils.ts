@@ -1,5 +1,4 @@
 import { clsx, type ClassValue } from "clsx";
-import { time } from "console";
 import { twMerge } from "tailwind-merge";
 
 // const API_URL = process.env.API_URL;
@@ -25,7 +24,7 @@ export async function getLatestData() {
   });
   const data = await res.json();
   const first4DataPoints = Array.isArray(data) ? data.slice(0, 4) : [];
-  let dataToShow = [];
+  const dataToShow = [];
 
   for (let i = 0; i < first4DataPoints.length; i++) {
     // add each data points timestamp, location.altitude, readings.temperature_celsius to dataToShow
