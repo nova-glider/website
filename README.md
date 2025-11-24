@@ -12,3 +12,4 @@ A nextjs project using Shadcn UI.
 
 - more data cards
 - auto-update graphs instead of having to click the refresh button
+- server-side fetching to protect API
