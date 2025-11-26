@@ -36,6 +36,8 @@ docker build -t $IMAGE_NAME .
 echo "🐳 Creating temporary container..."
 docker create --name $CONTAINER_NAME $IMAGE_NAME >/dev/null
 
+cd ..
+
 # Remove existing ./out if it exists
 if [ -d "./website/src/pages/out" ]; then
     echo "🧹 Removing existing ./out directory..."
