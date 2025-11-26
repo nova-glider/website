@@ -72,7 +72,7 @@ const corsOptions = {
 // Apply CORS middleware only to /api* routes (untested)
 app.use("/api", cors(corsOptions));
 // Allow preflight for all /api* routes
-app.options("/api*", cors(corsOptions));
+app.options("/api*routes", cors(corsOptions));
 
 let latestData = {};
 let sensorDataHistory = [];
