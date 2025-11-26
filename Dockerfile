@@ -16,7 +16,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build and export static site
-RUN pnpm next build && pnpm next export
+RUN pnpm build
 
 # ---- Final stage (just holds the output) ----
 FROM alpine AS export
