@@ -201,9 +201,10 @@ app.use('/dashboard', express.static(path.join(__dirname, 'pages/out')));
 
 // (Optional) fallback for client-side routing
 // disable for now
-// app.get('/dashboard*routes', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'pages/out/index.html'));
-// });
+app.get('/dashboard/*routes', (req, res) => {
+  // res.sendFile(path.join(__dirname, 'pages/out/index.html'));
+  res.redirect('/dashboard');
+});
 
 // ----------------
 //    LISTENER
