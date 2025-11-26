@@ -4,7 +4,6 @@ IMAGE_NAME="nextjs-static-export"
 CONTAINER_NAME="nextjs-export-tmp"
 DASHBOARD_BRANCH="main"
 
-
 set -e
 
 # check if Docker and git are installed
@@ -19,16 +18,9 @@ then
     exit 1
 fi
 
-# check for 'dashboard' folder
-if [ ! -d "./dashboard" ]; then
-    echo "'dashboard' folder not found in the current directory."
-    git clone https://github.com/nova-glider/dashboard
-fi
+git clone --branch $DASHBOARD_BRANCH https://github.com/nova-glider/dashboard
 
-# navigate into the dashboard folder
 cd dashboard
-
-git pull origin $DASHBOARD_BRANCH
 
 echo "📦 Building Docker image..."
 docker build -t $IMAGE_NAME .
