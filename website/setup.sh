@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-$IMAGE_NAME="all-in-one"
+IMAGE_NAME="all-in-one"
 
 cd ..
 ./build-dashboard.sh
