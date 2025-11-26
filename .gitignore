@@ -1,7 +1,7 @@
 .vscode/
 
 # Website project ignores
-homepage/node_modules/
-homepage/src/static/styles.css
-homepage/src/pages/out/
-homepage/db/
+/node_modules/
+/src/static/styles.css
+/src/pages/out/
+/db/
