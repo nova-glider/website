@@ -193,6 +193,18 @@ app.get("/api/sensor-data/get/latest", (req, res) => {
 });
 
 // ----------------
+//    dashboard
+// ----------------
+
+// Serve the exported Next.js static site
+app.use('/dashboard', express.static(path.join(__dirname, 'pages/out')));
+
+// (Optional) fallback for client-side routing
+app.get('/dashboard*routes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages/out/index.html'));
+});
+
+// ----------------
 //    LISTENER
 // ----------------
 
