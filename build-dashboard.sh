@@ -28,23 +28,23 @@ fi
 # navigate into the dashboard folder
 cd dashboard
 
-# git pull origin $DASHBOARD_BRANCH
+git pull origin $DASHBOARD_BRANCH
 
-# echo "📦 Building Docker image..."
-# docker build -t $IMAGE_NAME .
+echo "📦 Building Docker image..."
+docker build -t $IMAGE_NAME .
 
-# echo "🐳 Creating temporary container..."
-# docker create --name $CONTAINER_NAME $IMAGE_NAME >/dev/null
+echo "🐳 Creating temporary container..."
+docker create --name $CONTAINER_NAME $IMAGE_NAME >/dev/null
 
-# # Remove existing ./out if it exists
-# if [ -d "./src/pages/out" ]; then
-#     echo "🧹 Removing existing ./out directory..."
-#     rm -rf ./src/pages/out
-# fi
+# Remove existing ./out if it exists
+if [ -d "./src/pages/out" ]; then
+    echo "🧹 Removing existing ./out directory..."
+    rm -rf ./src/pages/out
+fi
 
-# echo "📁 Copying export folder from container..."
-# docker cp $CONTAINER_NAME:/out ./src/pages/out
-# echo "🗑️ Cleaning up..."
-# docker rm $CONTAINER_NAME >/dev/null
+echo "📁 Copying export folder from container..."
+docker cp $CONTAINER_NAME:/out ./src/pages/out
+echo "🗑️ Cleaning up..."
+docker rm $CONTAINER_NAME >/dev/null
 
 echo "✅ Done! Static export is available in ./src/pages/out"
