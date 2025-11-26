@@ -18,8 +18,9 @@ then
     exit 1
 fi
 
+rm -rf dashboard
+echo "📥 Cloning dashboard repository..."
 git clone --branch $DASHBOARD_BRANCH https://github.com/nova-glider/dashboard
-
 cd dashboard
 
 echo "📦 Building Docker image..."
@@ -27,9 +28,7 @@ docker build -t $IMAGE_NAME .
 
 echo "🐳 Creating temporary container..."
 docker create --name $CONTAINER_NAME $IMAGE_NAME >/dev/null
-
 cd ..
-
 # Remove existing ./out if it exists
 if [ -d "./website/src/pages/out" ]; then
     echo "🧹 Removing existing ./out directory..."
@@ -40,5 +39,6 @@ echo "📁 Copying export folder from container..."
 docker cp $CONTAINER_NAME:/out ./website/src/pages/out
 echo "🗑️ Cleaning up..."
 docker rm $CONTAINER_NAME >/dev/null
+rm -rf dashboard
 
 echo "✅ Done! Static export is available in ./website/src/pages/out"
