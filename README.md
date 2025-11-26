@@ -10,7 +10,6 @@ this branch is a merge of homepage, backend and dashboard for those who desire a
 ## How to use
 1. Clone this branch and go into the directory
 ```bash
-
 git clone --branch all-in-one https://github.com/nova-glider/website
 cd website
 ```
