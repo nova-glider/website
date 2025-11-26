@@ -6,6 +6,8 @@ DASHBOARD_BRANCH="main"
 
 set -e
 
+clear
+
 # check if Docker and git are installed
 if ! command -v docker &> /dev/null
 then
