@@ -37,14 +37,14 @@ echo "🐳 Creating temporary container..."
 docker create --name $CONTAINER_NAME $IMAGE_NAME >/dev/null
 
 # Remove existing ./out if it exists
-if [ -d "./src/pages/out" ]; then
+if [ -d "./website/src/pages/out" ]; then
     echo "🧹 Removing existing ./out directory..."
-    rm -rf ./src/pages/out
+    rm -rf ./website/src/pages/out
 fi
 
 echo "📁 Copying export folder from container..."
-docker cp $CONTAINER_NAME:/out ./src/pages/out
+docker cp $CONTAINER_NAME:/out ./website/src/pages/out
 echo "🗑️ Cleaning up..."
 docker rm $CONTAINER_NAME >/dev/null
 
-echo "✅ Done! Static export is available in ./src/pages/out"
+echo "✅ Done! Static export is available in ./website/src/pages/out"
