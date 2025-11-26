@@ -5,7 +5,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-workdir /app
+WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 COPY tailwind.config.js ./
