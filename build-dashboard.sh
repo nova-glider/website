@@ -5,7 +5,7 @@ CONTAINER_NAME="nextjs-export-tmp"
 DASHBOARD_BRANCH="main"
 
 
-set -eµ
+set -e
 
 # check if Docker and git are installed
 if ! command -v docker &> /dev/null
