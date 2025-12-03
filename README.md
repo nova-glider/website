@@ -1,7 +1,3 @@
-## TODO
-**fix eslint error because it fucks up building**
-
-
 ## Nova-Can Dashboard
 
 A nextjs project using Shadcn UI.
