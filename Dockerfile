@@ -19,9 +19,21 @@ COPY . .
 RUN pnpm build
 
 # ---- Final stage (just holds the output) ----
-FROM alpine AS export
+# Option 1: Export build artifacts to host (not directly possible with Dockerfile alone)
+# You can use 'docker cp' after building the image and running a container:
+# docker build -t my-app .
+# docker create --name temp-container my-app
+# docker cp temp-container:/app/.next/standalone ./standalone
+# docker rm temp-container
 
-WORKDIR /out
+# Option 2: Run the app directly in the final image (recommended for deployment)
+FROM node:20-alpine AS runner
 
-# Copy the export folder from the builder
-COPY --from=builder /app/out ./
+WORKDIR /app
+
+# Copy built app from builder
+COPY --from=builder /app/.next/standalone ./
+
+EXPOSE 3000
+
+CMD ["pnpm", "start"]
