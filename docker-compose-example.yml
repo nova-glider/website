@@ -9,7 +9,7 @@ services:
     environment:
       - PORT=3001
     volumes:
-      - ../db:/app/db
+      - db:/app/db
     restart: unless-stopped
 
   homepage:
@@ -26,6 +26,11 @@ services:
     build:
       context: ./dashboard
       dockerfile: Dockerfile
+    environment:
+      - API_URL=http://localhost:3001/api
     ports:
       - "3002:3000"
     restart: unless-stopped
+
+volumes:
+  db:
