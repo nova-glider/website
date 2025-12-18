@@ -69,8 +69,8 @@ export default function Live() {
           <Info />
           <AlertTitle>This is a demo.</AlertTitle>
           <AlertDescription>
-            All information shown is using placeholder data and does not reflect
-            real-time data.
+            All information shown is using demo data and does not reflect
+            real conditions.
           </AlertDescription>
         </Alert>
       </div>
