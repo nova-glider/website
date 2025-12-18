@@ -39,7 +39,7 @@ export default function Home() {
               <AlertDialogTitle>Warning</AlertDialogTitle>
               <AlertDialogDescription>
                 The NovaGlider dashboard is under heavy development and might
-                contain hella bugs.
+                contain a lot of bugs.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
