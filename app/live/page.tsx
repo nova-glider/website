@@ -77,7 +77,7 @@ export default function Live() {
 
       <div className="fixed bottom-25 left-1/2 -translate-x-1/2 z-50 flex justify-center">
         <Button
-          formAction={async () => {
+          onClick={async () => {
             setLoading(true);
             getLatestData()
               .then(setLatestData)
