@@ -7,9 +7,9 @@ A nextjs project using Shadcn UI.
 - dark and light mode
 - dynamic graph
 - get live data from [backend](https://github.com/nova-glider/backend)
+- server-side fetching to protect API
 
 ### Upcoming features
 
 - more data cards
 - auto-update graphs instead of having to click the refresh button
-- server-side fetching to protect API
