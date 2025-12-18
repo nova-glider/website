@@ -18,3 +18,11 @@ services:
     ports:
       - "3000:3000"
     restart: unless-stopped
+
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    restart: unless-stopped
