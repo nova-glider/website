@@ -1,0 +1,45 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+    networks:
+      - caddy
+    volumes:
+      - db:/app/db
+    restart: unless-stopped
+
+  homepage:
+    container_name: homepage
+    build:
+      context: ./website/homepage
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - caddy
+    restart: unless-stopped
+
+  dashboard:
+    container_name: dashboard
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    environment:
+      - API_URL=http://localhost:3001/api
+    ports:
+      - "3002:3000"
+    networks:
+      - caddy
+    restart: unless-stopped
+
+volumes:
+  db:
+networks:
+  caddy:
+    external: true
