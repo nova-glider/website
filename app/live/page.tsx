@@ -50,6 +50,8 @@ export default function Live() {
   const [latestData, setLatestData] = useState<AltitudeData[]>([]);
   const [loading, setLoading] = useState(true);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [lastFetchTime, setLastFetchTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(Date.now());
 
   const latestDataHandler = () => {
     getLatestData()
@@ -60,6 +62,7 @@ export default function Live() {
       .finally(() => {
         setLoading(false);
         setButtonLoading(false);
+        setLastFetchTime(Date.now());
       });
   };
 
@@ -72,6 +75,13 @@ export default function Live() {
     const interval = setInterval(() => {
       latestDataHandler();
     }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -89,7 +99,7 @@ export default function Live() {
       </div>
 
       <div className="fixed bottom-25 left-1/2 -translate-x-1/2 z-50 flex justify-center">
-        <Button
+        {/* <Button
           onClick={() => {
             setButtonLoading(true);
             latestDataHandler();
@@ -97,7 +107,8 @@ export default function Live() {
           disabled={buttonLoading}
         >
           {buttonLoading ? "Loading..." : "Refresh"}
-        </Button>
+        </Button> */}
+        <p className="text-muted-foreground">Last checked: {Math.floor((currentTime + 1000 - lastFetchTime) / 1000)}s ago</p>
       </div>
 
       <div className="fixed top-4 right-4 z-50">
