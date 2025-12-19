@@ -24,7 +24,7 @@ export default function Home() {
     new Promise((resolve) =>
       setTimeout(() => resolve({ name: "timeout" }), 500)
     ).then(() => {
-      router.push("/live");
+      router.push(`${process.env.BASEPATH}/live`);
     });
 
   return (
