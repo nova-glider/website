@@ -53,14 +53,14 @@ export default function Live() {
 
   const latestDataHandler = () => {
     getLatestData()
-    .then(setLatestData)
-    .catch((error) => {
-      console.error("Failed to fetch latest data:", error);
-    })
-    .finally(() => {
-      setLoading(false);
-      setButtonLoading(false);
-    });
+      .then(setLatestData)
+      .catch((error) => {
+        console.error("Failed to fetch latest data:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+        setButtonLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function Live() {
 
       <div className="fixed bottom-25 left-1/2 -translate-x-1/2 z-50 flex justify-center">
         <Button
-          onClick={async () => {
+          onClick={() => {
             setButtonLoading(true);
             latestDataHandler();
           }}
