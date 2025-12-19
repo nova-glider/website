@@ -127,27 +127,12 @@ export default function Live() {
         </Alert>
       </div>
 
-      <div className="fixed bottom-25 left-1/2 -translate-x-1/2 z-50 flex justify-center">
-        {/* <Button
-          onClick={() => {
-            setButtonLoading(true);
-            latestDataHandler();
-          }}
-          disabled={buttonLoading}
-        >
-          {buttonLoading ? "Loading..." : "Refresh"}
-        </Button> */}
-        <p className="text-muted-foreground">
-          Last checked:{" "}
-          {Math.floor((currentTime + 1000 - lastFetchTime) / 1000)}s ago
-        </p>
-      </div>
-
       <div className="fixed top-4 right-4 z-50">
         <ModeToggle />
       </div>
-      <div className="flex flex-col sm:flex-row items-center justify-center min-h-screen max-w-md mx-auto">
-        <Card className="w-full max-w-sm m-4 aspect-[4/3] sm:mb-20">
+      <div className="flex flex-col items-center justify-center mx-auto min-h-screen">
+        <div className="flex flex-col sm:flex-row items-center justify-center max-w-md">
+          <Card className="w-full max-w-sm m-4 aspect-[4/3] sm:mb-20">
           <CardHeader>
             <CardTitle>Altitude</CardTitle>
             <CardDescription>
@@ -256,6 +241,14 @@ export default function Live() {
             <p>Card Footer</p>
           </CardFooter> */}
         </Card>
+        </div>
+
+        <div className="flex justify-center">
+          <p className="text-muted-foreground">
+            Last checked:{" "}
+            {Math.floor((currentTime + 1000 - lastFetchTime) / 1000)}s ago
+          </p>
+        </div>
       </div>
     </div>
   );
