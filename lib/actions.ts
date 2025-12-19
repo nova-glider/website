@@ -17,6 +17,8 @@ export async function getLatestData() {
       temperature: first4DataPoints[i].readings.temperature_celsius
     });
   }
+  
+  dataToShow.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 
   return dataToShow;
 }
