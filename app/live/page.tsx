@@ -48,19 +48,32 @@ export default function Live() {
     [key: string]: unknown;
   };
   const [latestData, setLatestData] = useState<AltitudeData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [buttonLoading, setButtonLoading] = useState(false);
+
+  const latestDataHandler = () => {
+    getLatestData()
+    .then(setLatestData)
+    .catch((error) => {
+      console.error("Failed to fetch latest data:", error);
+    })
+    .finally(() => {
+      setLoading(false);
+      setButtonLoading(false);
+    });
+  };
 
   useEffect(() => {
-    getLatestData()
-      .then(setLatestData)
-      .catch((error) => {
-        console.error("Failed to fetch latest data:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setLoading(true);
+    latestDataHandler();
   }, []);
 
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      latestDataHandler();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div>
@@ -69,8 +82,8 @@ export default function Live() {
           <Info />
           <AlertTitle>This is a demo.</AlertTitle>
           <AlertDescription>
-            All information shown is using demo data and does not reflect
-            real conditions.
+            All information shown is using demo data and does not reflect real
+            conditions.
           </AlertDescription>
         </Alert>
       </div>
@@ -78,19 +91,12 @@ export default function Live() {
       <div className="fixed bottom-25 left-1/2 -translate-x-1/2 z-50 flex justify-center">
         <Button
           onClick={async () => {
-            setLoading(true);
-            getLatestData()
-              .then(setLatestData)
-              .catch((error) => {
-                console.error("Failed to fetch latest data:", error);
-              })
-              .finally(() => {
-                setLoading(false);
-              });
+            setButtonLoading(true);
+            latestDataHandler();
           }}
-          disabled={loading}
+          disabled={buttonLoading}
         >
-          {loading ? "Loading..." : "Refresh"}
+          {buttonLoading ? "Loading..." : "Refresh"}
         </Button>
       </div>
 
