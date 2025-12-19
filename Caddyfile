@@ -8,18 +8,5 @@ novaglider.mooo.com {
                 reverse_proxy backend:3001
         }
 
-        # 3) Default reverse proxy for everything else
         reverse_proxy homepage:3000
-
-        # optionally:
-        # 4) Custom 502 error page
-        handle_errors {
-                @bad_gateway expression {http.error.status_code} == 502
-                handle @bad_gateway {
-                        root * /srv
-                        rewrite * /
-                        templates
-                        file_server
-                }
-        }
 }
