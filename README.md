@@ -5,7 +5,7 @@ this branch is a merge of homepage, backend and dashboard for those who desire a
 ---
 
 > [!WARNING]  
-> I heavily recommend using different images inside a compose stack as opposed to smashing everything into one.
+> I heavily recommend using different images inside a compose stack as opposed to smashing everything into one. (for now, until i fix everything)
 
 ## How to use
 1. Clone this branch and go into the directory
