@@ -2,7 +2,7 @@
 
 IMAGE_NAME="nextjs-static-export"
 CONTAINER_NAME="nextjs-export-tmp"
-DASHBOARD_BRANCH="main"
+DASHBOARD_BRANCH="development"
 
 set -e
 
