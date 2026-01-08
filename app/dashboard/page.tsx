@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import type { Metadata } from "next";
 
 import { Info } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
@@ -49,11 +48,6 @@ const chartConfigTemperature = {
     color: "#f97316",
   },
 } satisfies ChartConfig;
-
-export const metadata: Metadata = {
-  title: "NovaGlider Dashboard",
-  description: "Live NovaGlider satellite statistics dashboard.",
-};
 
 export default function Live() {
   type AltitudeData = {
