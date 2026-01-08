@@ -1,15 +1,3 @@
-## Nova-Can Dashboard
+## Nova-Glider Website v2
 
-A nextjs project using Shadcn UI.
-
-### Current features
-
-- dark and light mode
-- dynamic graph
-- get live data from [backend](https://github.com/nova-glider/backend)
-- server-side fetching to protect API
-
-### Upcoming features
-
-- more data cards
-- auto-update graphs instead of having to click the refresh button
+A merge of all website repo's based of the dashboards development nextjs base.
