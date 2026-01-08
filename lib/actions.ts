@@ -1,10 +1,10 @@
 "use server";
 
+import { initializeDb, getHistory } from "@/lib/sensor-data";
+
 export async function getLatestData() {
-  const res = await fetch(`${process.env.API_URL}/sensor-data/get/all`, {
-    cache: "no-store",
-  });
-  const data = await res.json();
+  await initializeDb();
+  const data = await getHistory();
   const first4DataPoints = Array.isArray(data) ? data.slice(0, 4) : [];
   
   const dataToShow = first4DataPoints.map((point) => ({

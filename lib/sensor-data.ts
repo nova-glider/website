@@ -3,7 +3,13 @@ import path from "path";
 
 export interface SensorData {
   timestamp: string;
-  [key: string]: unknown;
+  location: {
+    altitude: number;
+  };
+  readings: {
+    temperature_celsius: number;
+  };
+  [key: string]: any;
 }
 
 const DB_DIR = path.join(process.cwd(), "db");
@@ -68,9 +74,7 @@ export async function readFromFile(filename: string): Promise<SensorData> {
 export async function listSensorFiles(): Promise<string[]> {
   try {
     const files = await fs.readdir(DB_DIR);
-    const sensorFiles = files.filter((f) =>
-      /^sensor-data-\d+\.json$/.test(f)
-    );
+    const sensorFiles = files.filter((f) => /^sensor-data-\d+\.json$/.test(f));
 
     // Sort by timestamp in filename (descending)
     sensorFiles.sort((a, b) => {
@@ -102,10 +106,7 @@ export async function loadHistoryFromDisk(): Promise<SensorData[]> {
     const loadedData = await Promise.all(
       files.map(async (file) => {
         try {
-          const data = await fs.readFile(
-            path.join(DB_DIR, file),
-            "utf-8"
-          );
+          const data = await fs.readFile(path.join(DB_DIR, file), "utf-8");
           return JSON.parse(data) as SensorData;
         } catch (parseError) {
           console.error(`Error parsing file ${file}:`, parseError);
@@ -138,10 +139,7 @@ export async function loadLatestFromDisk(): Promise<SensorData | null> {
       return null;
     }
 
-    const data = await fs.readFile(
-      path.join(DB_DIR, files[0]),
-      "utf-8"
-    );
+    const data = await fs.readFile(path.join(DB_DIR, files[0]), "utf-8");
     latestData = JSON.parse(data) as SensorData;
     return latestData;
   } catch (error) {
@@ -195,10 +193,7 @@ export function getCorsHeaders(origin?: string): Record<string, string> {
   let corsOrigin = allowedOrigins[0];
 
   if (origin) {
-    if (
-      allowedOrigins.includes("*") ||
-      allowedOrigins.includes(origin)
-    ) {
+    if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
       corsOrigin = origin;
     }
   }

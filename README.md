@@ -7,8 +7,6 @@ git clone --branch v2-dev https://github.com/nova-glider/website
 
 cd website
 
-cp .env.example .env.local
-
 docker compose up --build -d
 
 # localhost:3000
