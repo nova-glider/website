@@ -1,13 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { cardsData } from '@/data/cards';
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
 
   const initializeParticles = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((window as any).particlesJS) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).particlesJS('particles-js', {
         particles: {
           number: { value: 100, density: { enable: true, value_area: 800 } },
@@ -32,6 +35,7 @@ export default function Home() {
         retina_detect: true,
       });
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).particlesJS('particles-js-cards', {
         particles: {
           number: { value: 100, density: { enable: true, value_area: 800 } },
@@ -90,7 +94,8 @@ export default function Home() {
 
     // Handle card tilt and glow effects
     const cardsDataArray = cardsData.cards;
-    let eventListeners: Map<string, any> = new Map();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const eventListeners: Map<string, any> = new Map();
 
     function enableCardTiltGlow() {
       cardsDataArray.forEach((_, i) => {
@@ -320,19 +325,25 @@ export default function Home() {
                   className="relative bg-white/10 dark:bg-white/5 backdrop-blur-lg rounded-2xl p-6 shadow-2xl border border-white/20 transition-transform duration-100 will-change-transform"
                 >
                   <div id={`glow-overlay-${i}`} className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-100"></div>
-                  <img
+                  <Image
                     src={card.img}
                     alt="Profile pic"
-                    className="rounded-full w-24 h-24 mx-auto mb-4 shadow-lg relative z-20"
+                    width={96}
+                    height={96}
+                    className="rounded-full mx-auto mb-4 shadow-lg relative z-20"
                   />
                   <h2 className="text-xl font-bold text-center text-white relative z-20">{card.name}</h2>
                   <p className="text-center text-blue-300 text-sm relative z-20">{card.role}</p>
                   <button
-                    onClick={() =>
-                      card.email || card.phone || (card as any).url
-                        ? contactModal(card.name, card.email || '', card.phone || '', (card as any).url || '')
-                        : noContact(card.name)
-                    }
+                    onClick={() => {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      const cardAny = card as any;
+                      if (card.email || card.phone || cardAny.url) {
+                        contactModal(card.name, card.email || '', card.phone || '', cardAny.url || '');
+                      } else {
+                        noContact(card.name);
+                      }
+                    }}
                     className="mt-6 block mx-auto bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-300 relative z-20 cursor-pointer"
                   >
                     Contact

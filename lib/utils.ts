@@ -16,8 +16,3 @@ export function readTimeStamp(timestamp: string | number | Date) {
     hour12: false,
   });
 }
-
-// Helper function to pause execution for a given time in ms
-function pause(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}

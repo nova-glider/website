@@ -57,7 +57,7 @@ export default function Live() {
   };
   const [latestData, setLatestData] = useState<AltitudeData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const [, setButtonLoading] = useState(false);
   const [lastFetchTime, setLastFetchTime] = useState(Date.now());
   const [currentTime, setCurrentTime] = useState(Date.now());
 
