@@ -61,17 +61,18 @@ export default function Live() {
   const [lastFetchTime, setLastFetchTime] = useState(Date.now());
   const [currentTime, setCurrentTime] = useState(Date.now());
 
-  const latestDataHandler = () => {
-    getLatestData()
-      .then(setLatestData)
-      .catch((error) => {
-        console.error("Failed to fetch latest data:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-        setButtonLoading(false);
-        setLastFetchTime(Date.now());
-      });
+  const latestDataHandler = async () => {
+    try {
+      const data = await getLatestData();
+      setLatestData([...data]);
+      setLoading(false);
+      setButtonLoading(false);
+      setLastFetchTime(Date.now());
+    } catch (error) {
+      console.error("Failed to fetch latest data:", error);
+      setLoading(false);
+      setButtonLoading(false);
+    }
   };
 
   useEffect(() => {

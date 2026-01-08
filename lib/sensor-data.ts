@@ -18,6 +18,7 @@ const DB_DIR = path.join(process.cwd(), "db");
 let latestData: SensorData | null = null;
 let sensorDataHistory: SensorData[] = [];
 let isHistoryLoaded = false;
+let lastSyncedFileName: string | null = null;
 
 /**
  * Ensure the database directory exists
@@ -103,8 +104,44 @@ export async function loadHistoryFromDisk(): Promise<SensorData[]> {
       return [];
     }
 
-    const loadedData = await Promise.all(
-      files.map(async (file) => {
+    // If this is the first load, load all files
+    if (!isHistoryLoaded || lastSyncedFileName === null) {
+      const loadedData = await Promise.all(
+        files.map(async (file) => {
+          try {
+            const data = await fs.readFile(path.join(DB_DIR, file), "utf-8");
+            return JSON.parse(data) as SensorData;
+          } catch (parseError) {
+            console.error(`Error parsing file ${file}:`, parseError);
+            return null;
+          }
+        })
+      );
+
+      sensorDataHistory = loadedData.filter(
+        (item) => item !== null
+      ) as SensorData[];
+      isHistoryLoaded = true;
+      
+      // Set lastSyncedFileName to the newest file
+      if (files.length > 0) {
+        lastSyncedFileName = files[0];
+      }
+
+      return sensorDataHistory;
+    }
+
+    // Incremental load: only load files newer than lastSyncedFileName
+    const lastSyncedIndex = files.indexOf(lastSyncedFileName);
+    const newFiles = lastSyncedIndex === -1 ? files : files.slice(0, lastSyncedIndex);
+
+    if (newFiles.length === 0) {
+      // No new files
+      return sensorDataHistory;
+    }
+
+    const newData = await Promise.all(
+      newFiles.map(async (file) => {
         try {
           const data = await fs.readFile(path.join(DB_DIR, file), "utf-8");
           return JSON.parse(data) as SensorData;
@@ -115,10 +152,17 @@ export async function loadHistoryFromDisk(): Promise<SensorData[]> {
       })
     );
 
-    sensorDataHistory = loadedData.filter(
+    const validNewData = newData.filter(
       (item) => item !== null
     ) as SensorData[];
-    isHistoryLoaded = true;
+
+    // Prepend new data to history (files are sorted newest first)
+    sensorDataHistory = [...validNewData, ...sensorDataHistory];
+    
+    // Update lastSyncedFileName to the newest file
+    if (newFiles.length > 0) {
+      lastSyncedFileName = newFiles[0];
+    }
 
     return sensorDataHistory;
   } catch (error) {
@@ -162,9 +206,10 @@ export async function getLatest(): Promise<SensorData | null> {
  * Get all sensor data history (from memory or disk)
  */
 export async function getHistory(): Promise<SensorData[]> {
-  if (isHistoryLoaded && sensorDataHistory.length > 0) {
-    return sensorDataHistory;
+  if (!isHistoryLoaded) {
+    return loadHistoryFromDisk();
   }
+  // Always check for new files on subsequent calls
   return loadHistoryFromDisk();
 }
 
@@ -176,8 +221,11 @@ export async function addSensorData(data: SensorData): Promise<void> {
   latestData = data;
   sensorDataHistory.unshift(data);
 
-  // Save to disk
+  // Update the lastSyncedFileName to track this new data
   const timestampCleaned = cleanTimestamp(data.timestamp);
+  lastSyncedFileName = `sensor-data-${timestampCleaned}.json`;
+
+  // Save to disk
   await saveToFile(`sensor-data-${timestampCleaned}`, data);
 }
 
