@@ -54,6 +54,11 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Create db directory with correct ownership
+RUN mkdir -p /app/db \
+ && chown -R nextjs:nodejs /app/db \
+ && chmod 775 /app/db
+
 USER nextjs
 
 EXPOSE 3000
