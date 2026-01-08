@@ -3,7 +3,7 @@
 A merge of all website repo's based of the dashboards development nextjs base.
 
 ```bash
-git pull --branch v2-dev https://github.com/nova-glider/website
+git clone --branch v2-dev https://github.com/nova-glider/website
 
 cd website
 
