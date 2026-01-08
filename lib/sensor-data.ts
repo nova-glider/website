@@ -9,7 +9,7 @@ export interface SensorData {
   readings: {
     temperature_celsius: number;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const DB_DIR = path.join(process.cwd(), "db");
