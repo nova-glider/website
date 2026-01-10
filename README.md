@@ -2,8 +2,11 @@
 
 A merge of all website repo's based of the dashboards development nextjs base.
 
+> [!WARNING]  
+> If you are still using the v1 branch as main, i recommend you remove your local repo and reclone it.
+
 ```bash
-git clone --branch v2-dev https://github.com/nova-glider/website
+git clone https://github.com/nova-glider/website
 
 cd website
 
