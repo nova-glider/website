@@ -17,7 +17,6 @@ export const cardsData = {
       role: "Antenna & Parachute design",
       img: "/andres.jpeg",
       email: "andres.de.pauw@telenet.be",
-      phone: "REDACTED",
     },
     {
       name: "Louise",
