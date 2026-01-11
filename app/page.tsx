@@ -354,8 +354,8 @@ export default function Home() {
                     onClick={() => {
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       const cardAny = card as any;
-                      if (card.email || card.phone || cardAny.url) {
-                        contactModal(card.name, card.email || '', card.phone || '', cardAny.url || '');
+                      if (cardAny.email || cardAny.phone || cardAny.url) {
+                        contactModal(card.name, cardAny.email || '', cardAny.phone || '', cardAny.url || '');
                       } else {
                         noContact(card.name);
                       }
