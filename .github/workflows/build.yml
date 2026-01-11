@@ -1,21 +1,25 @@
 name: Build and Push Docker Image
-on:  
+
+on:
   workflow_dispatch:
     inputs:
       version:
         description: "Version tag (e.g., v1.0.0)"
         required: false
         default: "manual"
-env:  
+
+env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-jobs:  
+
+jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    steps:  
+
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -35,12 +39,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            # If it's a Git tag, remove the 'v' and tag it with the version (without 'v')
-            type=raw,value=${{ github.ref == 'refs/tags/v1.0.0' && github.ref != '' && github.ref != 'refs/tags/' ? github.ref | replace('refs/tags/v', '') : '' }},
-            # Only tag as latest for GitHub tag references (i.e., refs/tags/)
-            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
-            # For manual dispatch with version input (remove 'v' if present)
-            type=raw,value=${{ github.event.inputs.version | replace('v', '') }},enable=${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version != '' }}
+            # For manual dispatch with version input
+            type=raw,value=${{ github.event.inputs.version }},enable=${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version != '' }}
+            # Always tag as latest for version tags
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
