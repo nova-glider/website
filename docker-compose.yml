@@ -8,6 +8,8 @@ services:
       - "3000:3000"
     volumes:
       - ./db:/app/db
+      - ./public:/app/public
+      - ./data:/app/data
     environment:
       - NODE_ENV=production
     restart: unless-stopped

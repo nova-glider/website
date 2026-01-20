@@ -19,3 +19,5 @@ docker compose up --build -d
 # localhost:3000
 
 ```
+
+if you really need to you can quickly edit ./data and/or ./public to change contact details and profile pictures
