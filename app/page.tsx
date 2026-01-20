@@ -280,12 +280,22 @@ export default function Home() {
         <p className="text-base sm:text-2xl sm:max-w-xl text-gray-300 backdrop-blur-md bg-white/5 px-4 py-3 rounded-xl border border-white/10 z-20">
           The first CanSat ever to deploy other flying objects mid air.
         </p>
-        <a
-          href="#intro"
-          className="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-300 z-20"
-        >
-          Learn More
-        </a>
+        <div className="flex flex-col sm:flex-row gap-4 mt-8 z-20">
+          <a
+            href="#intro"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-300"
+          >
+            Learn More
+          </a>
+          <a
+            href="/dashboard"
+            className="inline-block p-[2px] rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-105 transition-transform duration-300"
+          >
+            <span className="block px-6 py-3 rounded-full bg-transparent text-white">
+              View dashboard
+            </span>
+          </a>
+        </div>
       </section>
 
       {/* Section 2: Introduction */}
