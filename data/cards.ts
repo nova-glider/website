@@ -31,7 +31,7 @@ export const cardsData = {
     },
     {
       name: "Gust",
-      role: "Embedded Software Engineer",
+      role: "Former Member",
       img: "/gust.jpeg",
     },
     {
