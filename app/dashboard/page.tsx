@@ -150,114 +150,114 @@ export default function Live() {
       <div className="flex flex-col items-center justify-center mx-auto min-h-screen">
         <div className="flex flex-col sm:flex-row items-center justify-center max-w-md">
           <Card className="w-full max-w-sm m-4 aspect-[4/3] sm:mb-20">
-          <CardHeader>
-            <CardTitle>Altitude</CardTitle>
-            <CardDescription>
-              The height of the cansat over time.
-            </CardDescription>
-            <CardAction></CardAction>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <Skeleton className="w-full aspect-video h-44 mb-3" />
-            ) : latestData && latestData.length > 0 ? (
-              <ChartContainer
-                className="w-full aspect-video h-44 mb-3"
-                config={chartConfigAltitude}
-              >
-                <AreaChart
-                  accessibilityLayer
-                  data={latestData}
-                  margin={{
-                    left: 12,
-                    right: 12,
-                  }}
-                  className="p-2"
+            <CardHeader>
+              <CardTitle>Altitude</CardTitle>
+              <CardDescription>
+                The height of the cansat over time.
+              </CardDescription>
+              <CardAction></CardAction>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <Skeleton className="w-full aspect-video h-44 mb-3" />
+              ) : latestData && latestData.length > 0 ? (
+                <ChartContainer
+                  className="w-full aspect-video h-44 mb-3"
+                  config={chartConfigAltitude}
                 >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="timestamp"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    interval={0}
-                    tickFormatter={(value) => readTimeStamp(value)}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel hideIndicator />}
-                  />
-                  <Area
-                    dataKey="altitude"
-                    type="natural"
-                    fill="var(--color-altitude)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-altitude)"
-                  />
-                </AreaChart>
-              </ChartContainer>
-            ) : (
-              <ErrorComponent className="w-full aspect-video h-44 mb-3" />
-            )}
-          </CardContent>
-          {/* <CardFooter>
+                  <AreaChart
+                    accessibilityLayer
+                    data={latestData}
+                    margin={{
+                      left: 12,
+                      right: 12,
+                    }}
+                    className="p-2"
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="timestamp"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      interval={Math.ceil(latestData.length / 5) - 1}
+                      tickFormatter={(value) => readTimeStamp(value)}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel hideIndicator />}
+                    />
+                    <Area
+                      dataKey="altitude"
+                      type="natural"
+                      fill="var(--color-altitude)"
+                      fillOpacity={0.4}
+                      stroke="var(--color-altitude)"
+                    />
+                  </AreaChart>
+                </ChartContainer>
+              ) : (
+                <ErrorComponent className="w-full aspect-video h-44 mb-3" />
+              )}
+            </CardContent>
+            {/* <CardFooter>
             <p>Card Footer</p>
           </CardFooter> */}
-        </Card>
+          </Card>
 
-        <Card className="w-full max-w-sm m-4 aspect-[4/3] sm:mb-20">
-          <CardHeader>
-            <CardTitle>Temperature</CardTitle>
-            <CardDescription>The temperature over time.</CardDescription>
-            <CardAction></CardAction>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <Skeleton className="w-full aspect-video h-44 mb-3" />
-            ) : latestData && latestData.length > 0 ? (
-              <ChartContainer
-                className="w-full aspect-video h-44 mb-3"
-                config={chartConfigTemperature}
-              >
-                <AreaChart
-                  accessibilityLayer
-                  data={latestData}
-                  margin={{
-                    left: 12,
-                    right: 12,
-                  }}
-                  className="p-2"
+          <Card className="w-full max-w-sm m-4 aspect-[4/3] sm:mb-20">
+            <CardHeader>
+              <CardTitle>Temperature</CardTitle>
+              <CardDescription>The temperature over time.</CardDescription>
+              <CardAction></CardAction>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <Skeleton className="w-full aspect-video h-44 mb-3" />
+              ) : latestData && latestData.length > 0 ? (
+                <ChartContainer
+                  className="w-full aspect-video h-44 mb-3"
+                  config={chartConfigTemperature}
                 >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="timestamp"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    interval={0}
-                    tickFormatter={(value) => readTimeStamp(value)}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel hideIndicator />}
-                  />
-                  <Area
-                    dataKey="temperature"
-                    type="natural"
-                    fill="var(--color-temperature)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-temperature)"
-                  />
-                </AreaChart>
-              </ChartContainer>
-            ) : (
-              <ErrorComponent className="w-full aspect-video h-44 mb-3" />
-            )}
-          </CardContent>
-          {/* <CardFooter>
+                  <AreaChart
+                    accessibilityLayer
+                    data={latestData}
+                    margin={{
+                      left: 12,
+                      right: 12,
+                    }}
+                    className="p-2"
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="timestamp"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      interval={Math.ceil(latestData.length / 5) - 1}
+                      tickFormatter={(value) => readTimeStamp(value)}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel hideIndicator />}
+                    />
+                    <Area
+                      dataKey="temperature"
+                      type="natural"
+                      fill="var(--color-temperature)"
+                      fillOpacity={0.4}
+                      stroke="var(--color-temperature)"
+                    />
+                  </AreaChart>
+                </ChartContainer>
+              ) : (
+                <ErrorComponent className="w-full aspect-video h-44 mb-3" />
+              )}
+            </CardContent>
+            {/* <CardFooter>
             <p>Card Footer</p>
           </CardFooter> */}
-        </Card>
+          </Card>
         </div>
 
         <div className="flex justify-center">
