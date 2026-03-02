@@ -3,7 +3,7 @@ export const cardsData = {
     {
       name: "Sam",
       role: "Hardware & Firmware Engineer",
-      img: "/default.png",
+      img: "/sam.jpeg",
     },
     {
       name: "Wannes",
@@ -27,7 +27,7 @@ export const cardsData = {
     {
       name: "Remi",
       role: "Design & Social Media",
-      img: "/default.png",
+      img: "/remi.jpeg",
     },
     {
       name: "Gust",
