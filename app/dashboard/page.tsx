@@ -19,28 +19,13 @@
 import React, { useEffect, useState } from "react";
 
 import { Info } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { readTimeStamp } from "@/lib/utils";
 import { getLatestData } from "@/lib/actions";
 
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ChartCard } from "@/components/ui/chart-card";
+import { ChartConfig } from "@/components/ui/chart";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import ErrorComponent from "@/components/ui/error-component";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -65,13 +50,40 @@ const chartConfigTemperature = {
   },
 } satisfies ChartConfig;
 
+const chartConfigHumidity = {
+  humidity: {
+    label: "Humidity",
+    color: "#22dd22",
+  },
+} satisfies ChartConfig;
+
+const chartConfigCO2 = {
+  co2_ppm: {
+    label: "CO2 PPM",
+    color: "#8053ea",
+  },
+} satisfies ChartConfig;
+
+const chartConfigAirPressure = {
+  air_pressure: {
+    label: "Air Pressure",
+    color: "#e0ea53",
+  },
+} satisfies ChartConfig;
+
+const chartConfigAirQualityIndex = {
+  air_quality_index: {
+    label: "Air Quality Index",
+    color: "#53eaa8",
+  },
+} satisfies ChartConfig;  
+
 export default function Live() {
-  type AltitudeData = {
+  type SensorData = {
     timestamp: string | number;
-    altitude: number;
     [key: string]: unknown;
   };
-  const [latestData, setLatestData] = useState<AltitudeData[]>([]);
+  const [latestData, setLatestData] = useState<SensorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [, setButtonLoading] = useState(false);
   const [lastFetchTime, setLastFetchTime] = useState(Date.now());
@@ -134,9 +146,9 @@ export default function Live() {
       </div>
 
       <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-        <Alert className="max-w-md">
+        <Alert className="max-w-md shadow-md">
           <Info />
-          <AlertTitle>This is a demo.</AlertTitle>
+          {/* <AlertTitle>This is a demo.</AlertTitle> */}
           <AlertDescription>
             All information shown is using demo data and does not reflect real
             conditions.
@@ -148,119 +160,57 @@ export default function Live() {
         <ModeToggle />
       </div>
       <div className="flex flex-col items-center justify-center mx-auto min-h-screen">
-        <div className="flex flex-col sm:flex-row items-center justify-center max-w-md">
-          <Card className="w-full max-w-sm m-4 aspect-[4/3] sm:mb-20">
-            <CardHeader>
-              <CardTitle>Altitude</CardTitle>
-              <CardDescription>
-                The height of the cansat over time.
-              </CardDescription>
-              <CardAction></CardAction>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <Skeleton className="w-full aspect-video h-44 mb-3" />
-              ) : latestData && latestData.length > 0 ? (
-                <ChartContainer
-                  className="w-full aspect-video h-44 mb-3"
-                  config={chartConfigAltitude}
-                >
-                  <AreaChart
-                    accessibilityLayer
-                    data={latestData}
-                    margin={{
-                      left: 12,
-                      right: 12,
-                    }}
-                    className="p-2"
-                  >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      dataKey="timestamp"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      interval={Math.ceil(latestData.length / 5) - 1}
-                      tickFormatter={(value) => readTimeStamp(value)}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel hideIndicator />}
-                    />
-                    <Area
-                      dataKey="altitude"
-                      type="natural"
-                      fill="var(--color-altitude)"
-                      fillOpacity={0.4}
-                      stroke="var(--color-altitude)"
-                    />
-                  </AreaChart>
-                </ChartContainer>
-              ) : (
-                <ErrorComponent className="w-full aspect-video h-44 mb-3" />
-              )}
-            </CardContent>
-            {/* <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter> */}
-          </Card>
-
-          <Card className="w-full max-w-sm m-4 aspect-[4/3] sm:mb-20">
-            <CardHeader>
-              <CardTitle>Temperature</CardTitle>
-              <CardDescription>The temperature over time.</CardDescription>
-              <CardAction></CardAction>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <Skeleton className="w-full aspect-video h-44 mb-3" />
-              ) : latestData && latestData.length > 0 ? (
-                <ChartContainer
-                  className="w-full aspect-video h-44 mb-3"
-                  config={chartConfigTemperature}
-                >
-                  <AreaChart
-                    accessibilityLayer
-                    data={latestData}
-                    margin={{
-                      left: 12,
-                      right: 12,
-                    }}
-                    className="p-2"
-                  >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      dataKey="timestamp"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      interval={Math.ceil(latestData.length / 5) - 1}
-                      tickFormatter={(value) => readTimeStamp(value)}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel hideIndicator />}
-                    />
-                    <Area
-                      dataKey="temperature"
-                      type="natural"
-                      fill="var(--color-temperature)"
-                      fillOpacity={0.4}
-                      stroke="var(--color-temperature)"
-                    />
-                  </AreaChart>
-                </ChartContainer>
-              ) : (
-                <ErrorComponent className="w-full aspect-video h-44 mb-3" />
-              )}
-            </CardContent>
-            {/* <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter> */}
-          </Card>
+        <div className="flex flex-wrap items-center justify-center">
+          <ChartCard
+            title="Altitude"
+            description="The height of the cansat over time."
+            dataKey="altitude"
+            chartConfig={chartConfigAltitude}
+            loading={loading}
+            latestData={latestData}
+          />
+          <ChartCard
+            title="Temperature"
+            description="The temperature over time."
+            dataKey="temperature"
+            chartConfig={chartConfigTemperature}
+            loading={loading}
+            latestData={latestData}
+          />
+          <ChartCard
+            title="Humidity"
+            description="The humidity in percent over time."
+            dataKey="humidity"
+            chartConfig={chartConfigHumidity}
+            loading={loading}
+            latestData={latestData}
+          />
+          <ChartCard
+            title="CO2 PPM"
+            description="The carbon dioxide levels over time."
+            dataKey="co2_ppm"
+            chartConfig={chartConfigCO2}
+            loading={loading}
+            latestData={latestData}
+          />
+          <ChartCard
+            title="Air Pressure"
+            description="The air pressure over time."
+            dataKey="air_pressure"
+            chartConfig={chartConfigAirPressure}
+            loading={loading}
+            latestData={latestData}
+          />
+          <ChartCard
+            title="Air Quality Index"
+            description="The air quality index over time."
+            dataKey="air_quality_index"
+            chartConfig={chartConfigAirQualityIndex}
+            loading={loading}
+            latestData={latestData}
+          />
         </div>
-
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-4">
           <p className="text-muted-foreground">
             Last checked:{" "}
             {Math.floor((currentTime + 1000 - lastFetchTime) / 1000)}s ago

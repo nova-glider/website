@@ -24,6 +24,7 @@ export interface SensorData {
   };
   readings: {
     temperature_celsius: number;
+    [key: string]: unknown;
   };
   [key: string]: unknown;
 }

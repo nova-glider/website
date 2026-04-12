@@ -27,6 +27,10 @@ export async function getLatestData() {
     timestamp: point.timestamp,
     altitude: point.location.altitude,
     temperature: point.readings.temperature_celsius,
+    humidity: point.readings.humidity_percent,
+    air_pressure: point.readings.air_pressure_hpa,
+    co2_ppm: point.readings.co2_ppm,
+    air_quality_index: point.readings.air_quality_index,
   }));
 
   dataToShow.sort(
