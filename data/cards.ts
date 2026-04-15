@@ -9,7 +9,7 @@ export const cardsData = {
       name: "Wannes",
       role: "Web & Embedded Software",
       img: "/wannes.jpeg",
-      url: "https://wxnnvs.ftp.sh",
+      url: "https://wannesg.be",
       discord: "@wxnnvs",
     },
     {
