@@ -20,9 +20,9 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import OverviewTab from "./tabs/overview";
-import DataManagementTab from "./tabs/data-management";
-import SettingsTab from "./tabs/settings";
+import OverviewTab from "@/app/admin/tabs/overview";
+import DataManagementTab from "@/app/admin/tabs/data-management";
+import SettingsTab from "@/app/admin/tabs/settings";
 
 type TabValue = "overview" | "data" | "settings";
 

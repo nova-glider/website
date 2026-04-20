@@ -94,7 +94,7 @@ export default function DataManagementTab() {
     filtered.sort((a, b) => {
       const aVal = a[sortColumn as keyof SensorReading];
       const bVal = b[sortColumn as keyof SensorReading];
-      const comparison = aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+      const comparison = aVal > bVal ? 1 : aVal < bVal ? -1 : 0; 
       return sortDirection === "asc" ? comparison : -comparison;
     });
 
