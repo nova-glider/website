@@ -20,7 +20,7 @@ import { deleteRecordsByIds, deleteRecordsByDateRange, deleteAllRecords } from "
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { mode, recordIds, startDate, endDate } = body;
+    const { mode, recordIds, startDate, endDate, password } = body;
 
     const adminPassword = process.env.ADMIN_PASSWORD;
 
@@ -29,6 +29,13 @@ export async function POST(request: NextRequest) {
         { error: "Admin password not configured" },
         { status: 500 }
       );
+    }
+
+    if (password !== adminPassword) {
+      return NextResponse.json(
+        { error: "Invalid password" },
+        { status: 401 }
+      )
     }
 
     let deletedCount = 0;
