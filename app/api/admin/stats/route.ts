@@ -17,7 +17,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSystemStats } from "@/lib/sensor-data";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const { password } = body;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (password !== adminPassword) {
+    return NextResponse.json(
+      { error: "Invalid password" },
+      { status: 401 }
+    );
+  }
   try {
     const stats = await getSystemStats();
     return NextResponse.json(stats);
