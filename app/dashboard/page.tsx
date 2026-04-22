@@ -163,7 +163,7 @@ export default function Live() {
         <div className="flex flex-wrap items-center justify-center">
           <ChartCard
             title="Altitude"
-            description="The height of the cansat over time."
+            description="The height in metres."
             dataKey="altitude"
             chartConfig={chartConfigAltitude}
             loading={loading}
@@ -171,7 +171,7 @@ export default function Live() {
           />
           <ChartCard
             title="Temperature"
-            description="The temperature over time."
+            description="The temperature in degrees Celcius."
             dataKey="temperature"
             chartConfig={chartConfigTemperature}
             loading={loading}
@@ -179,15 +179,15 @@ export default function Live() {
           />
           <ChartCard
             title="Humidity"
-            description="The humidity in percent over time."
+            description="The humidity in percent."
             dataKey="humidity"
             chartConfig={chartConfigHumidity}
             loading={loading}
             latestData={latestData}
           />
           <ChartCard
-            title="CO2 PPM"
-            description="The carbon dioxide levels over time."
+            title="CO2"
+            description="The carbon dioxide in ppm."
             dataKey="co2_ppm"
             chartConfig={chartConfigCO2}
             loading={loading}
@@ -195,7 +195,7 @@ export default function Live() {
           />
           <ChartCard
             title="Air Pressure"
-            description="The air pressure over time."
+            description="The air pressure in hPa."
             dataKey="air_pressure"
             chartConfig={chartConfigAirPressure}
             loading={loading}
@@ -203,7 +203,7 @@ export default function Live() {
           />
           <ChartCard
             title="Air Quality Index"
-            description="The air quality index over time."
+            description="The AQI on a scale of 1-100."
             dataKey="air_quality_index"
             chartConfig={chartConfigAirQualityIndex}
             loading={loading}
