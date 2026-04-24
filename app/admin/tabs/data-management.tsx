@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -33,7 +33,7 @@ interface RawSensorData {
   [key: string]: unknown;
 }
 
-export default function DataManagementTab() {
+export default function DataManagementTab({ adminPassword }: { adminPassword: string }) {
   const [data, setData] = useState<SensorReading[]>([]);
   const [filteredData, setFilteredData] = useState<SensorReading[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -71,7 +71,7 @@ export default function DataManagementTab() {
         } else {
           toast.error("Failed to fetch sensor data");
         }
-      } catch (error) {
+      } catch {
         toast.error("Error fetching sensor data");
       } finally {
         setIsLoading(false);
@@ -91,10 +91,22 @@ export default function DataManagementTab() {
       filtered = filtered.filter((r) => new Date(r.timestamp) <= new Date(dateRangeEnd));
     }
 
+    const compareValues = (left: SensorReading[keyof SensorReading], right: SensorReading[keyof SensorReading]) => {
+      if (left == null && right == null) return 0;
+      if (left == null) return 1;
+      if (right == null) return -1;
+
+      if (typeof left === "number" && typeof right === "number") {
+        return left - right;
+      }
+
+      return String(left).localeCompare(String(right));
+    };
+
     filtered.sort((a, b) => {
       const aVal = a[sortColumn as keyof SensorReading];
       const bVal = b[sortColumn as keyof SensorReading];
-      const comparison = aVal > bVal ? 1 : aVal < bVal ? -1 : 0; 
+      const comparison = compareValues(aVal, bVal);
       return sortDirection === "asc" ? comparison : -comparison;
     });
 
@@ -137,6 +149,7 @@ export default function DataManagementTab() {
         body: JSON.stringify({
           mode: "individual",
           recordIds: Array.from(selectedRows),
+          password: adminPassword,
         }),
       });
 
@@ -148,7 +161,7 @@ export default function DataManagementTab() {
       } else {
         toast.error("Failed to delete records");
       }
-    } catch (error) {
+    } catch {
       toast.error("Error deleting records");
     } finally {
       setIsDeleting(false);
@@ -166,6 +179,7 @@ export default function DataManagementTab() {
           mode: "dateRange",
           startDate: dateRangeStart,
           endDate: dateRangeEnd,
+          password: adminPassword,
         }),
       });
 
@@ -181,7 +195,7 @@ export default function DataManagementTab() {
       } else {
         toast.error("Failed to delete records");
       }
-    } catch (error) {
+    } catch {
       toast.error("Error deleting records");
     } finally {
       setIsDeleting(false);
@@ -208,7 +222,7 @@ export default function DataManagementTab() {
       } else {
         toast.error("Failed to delete all data");
       }
-    } catch (error) {
+    } catch {
       toast.error("Error deleting all data");
     } finally {
       setIsDeleting(false);

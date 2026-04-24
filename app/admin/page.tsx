@@ -16,7 +16,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -53,7 +53,7 @@ export default function AdminPanel() {
         setError("Invalid password");
         toast.error("Invalid password");
       }
-    } catch (err) {
+    } catch {
       setError("Authentication failed");
       toast.error("Authentication failed");
     } finally {
@@ -153,7 +153,7 @@ export default function AdminPanel() {
         {/* Tab Content */}
         <div className="mt-6">
           {activeTab === "overview" && <OverviewTab />}
-          {activeTab === "data" && <DataManagementTab />}
+          {activeTab === "data" && <DataManagementTab adminPassword={password} />}
           {activeTab === "settings" && <SettingsTab />}
         </div>
       </div>
