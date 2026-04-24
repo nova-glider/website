@@ -1,12 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
-// @ts-expect-error -- package CSS file has no type declarations
-import "leaflet/dist/leaflet.css"
-import "leaflet-defaulticon-compatibility"
-// @ts-expect-error -- package CSS file has no type declarations
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 import { getLatestData } from "@/lib/actions";
 
