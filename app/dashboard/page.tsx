@@ -19,13 +19,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 import { Info } from "lucide-react";
-import { readTimeStamp } from "@/lib/utils";
 import { getLatestData } from "@/lib/actions";
 
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { ChartCard } from "@/components/ui/chart-card";
 import { ChartConfig } from "@/components/ui/chart";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -71,13 +70,6 @@ const chartConfigAirPressure = {
     color: "#e0ea53",
   },
 } satisfies ChartConfig;
-
-const chartConfigAirQualityIndex = {
-  air_quality_index: {
-    label: "Air Quality Index",
-    color: "#53eaa8",
-  },
-} satisfies ChartConfig;  
 
 export default function Live() {
   type SensorData = {

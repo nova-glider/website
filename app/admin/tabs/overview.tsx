@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
@@ -29,7 +29,7 @@ export default function OverviewTab() {
       } else {
         toast.error("Failed to fetch statistics");
       }
-    } catch (error) {
+    } catch {
       toast.error("Error fetching statistics");
     } finally {
       setIsLoading(false);
