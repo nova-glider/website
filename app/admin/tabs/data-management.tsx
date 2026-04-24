@@ -211,7 +211,7 @@ export default function DataManagementTab({ adminPassword }: { adminPassword: st
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           mode: "all",
-          password
+          password: adminPassword,
         }),
       });
 
