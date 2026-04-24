@@ -146,17 +146,6 @@ export default function Live() {
         </AlertDialog>
       </div>
 
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-        <Alert className="max-w-md shadow-md">
-          <Info />
-          {/* <AlertTitle>This is a demo.</AlertTitle> */}
-          <AlertDescription>
-            All information shown is using demo data and does not reflect real
-            conditions.
-          </AlertDescription>
-        </Alert>
-      </div>
-
       <div className="fixed top-4 right-4 z-50">
         <ModeToggle />
       </div>
