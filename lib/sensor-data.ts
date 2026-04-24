@@ -20,6 +20,8 @@ import path from "path";
 export interface SensorData {
   timestamp: string;
   location: {
+    longitude: number;
+    latitude: number;
     altitude: number;
   };
   readings: {
@@ -268,4 +270,144 @@ export function getCorsHeaders(origin?: string): Record<string, string> {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
   };
+}
+
+/**
+ * Calculate system statistics for admin panel
+ */
+export async function getSystemStats() {
+  try {
+    const files = await listSensorFiles();
+    let totalRecords = 0;
+    let dataVolumeMB = 0;
+    let dateRangeStart = "";
+    let dateRangeEnd = "";
+
+    // Calculate file sizes and record count
+    for (const file of files) {
+      const filePath = path.join(DB_DIR, file);
+      const stat = await fs.stat(filePath);
+      dataVolumeMB += stat.size / (1024 * 1024);
+    }
+
+    // Get all records to count and find date range
+    const history = await loadHistoryFromDisk();
+    totalRecords = history.length;
+
+    if (history.length > 0) {
+      // Assuming records are sorted by timestamp
+      dateRangeStart = history[history.length - 1]?.timestamp || "";
+      dateRangeEnd = history[0]?.timestamp || "";
+    }
+
+    // Get last sync time (newest file's modification time)
+    let lastSyncTime = "";
+    if (files.length > 0) {
+      const newestFilePath = path.join(DB_DIR, files[0]);
+      const stat = await fs.stat(newestFilePath);
+      lastSyncTime = new Date(stat.mtime).toLocaleString();
+    }
+
+    return {
+      totalRecords,
+      totalFileCount: files.length,
+      dataVolumeMB,
+      lastSyncTime,
+      dateRangeStart,
+      dateRangeEnd,
+    };
+  } catch (error) {
+    console.error("Error calculating system stats:", error);
+    throw error;
+  }
+}
+
+/**
+ * Delete records by individual timestamps
+ */
+export async function deleteRecordsByIds(recordIds: string[]): Promise<number> {
+  const history = await loadHistoryFromDisk();
+  const filtered = history.filter((record) => !recordIds.includes(record.timestamp));
+  
+  // Delete all old files
+  const files = await listSensorFiles();
+  for (const file of files) {
+    await fs.unlink(path.join(DB_DIR, file));
+  }
+  
+  // Write consolidated file with filtered data
+  if (filtered.length > 0) {
+    await fs.writeFile(
+      path.join(DB_DIR, `sensor-data-${cleanTimestamp(new Date().toISOString())}.json`),
+      JSON.stringify(filtered, null, 2)
+    );
+  }
+  
+  // Update in-memory cache
+  sensorDataHistory = filtered;
+  latestData = filtered.length > 0 ? filtered[0] : null;
+  lastSyncedFileName = null;
+  
+  return recordIds.length;
+}
+
+/**
+ * Delete records within a date range
+ */
+export async function deleteRecordsByDateRange(startDate: string, endDate: string): Promise<number> {
+  const history = await loadHistoryFromDisk();
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  
+  let deletedCount = 0;
+  const filtered = history.filter((record) => {
+    const recordDate = new Date(record.timestamp);
+    if (recordDate >= start && recordDate <= end) {
+      deletedCount++;
+      return false;
+    }
+    return true;
+  });
+  
+  // Delete all old files
+  const files = await listSensorFiles();
+  for (const file of files) {
+    await fs.unlink(path.join(DB_DIR, file));
+  }
+  
+  // Write consolidated file with filtered data
+  if (filtered.length > 0) {
+    await fs.writeFile(
+      path.join(DB_DIR, `sensor-data-${cleanTimestamp(new Date().toISOString())}.json`),
+      JSON.stringify(filtered, null, 2)
+    );
+  }
+  
+  // Update in-memory cache
+  sensorDataHistory = filtered;
+  latestData = filtered.length > 0 ? filtered[0] : null;
+  lastSyncedFileName = null;
+  
+  return deletedCount;
+}
+
+/**
+ * Delete all records
+ */
+export async function deleteAllRecords(): Promise<number> {
+  const history = await loadHistoryFromDisk();
+  const count = history.length;
+  
+  // Clear the database by removing all files
+  const files = await listSensorFiles();
+  for (const file of files) {
+    await fs.unlink(path.join(DB_DIR, file));
+  }
+  
+  // Clear in-memory cache
+  sensorDataHistory = [];
+  latestData = null;
+  lastSyncedFileName = null;
+  
+  return count;
 }

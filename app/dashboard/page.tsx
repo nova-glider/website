@@ -16,7 +16,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Info } from "lucide-react";
 import { readTimeStamp } from "@/lib/utils";
@@ -35,6 +35,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import dynamic from "next/dynamic";
 
 const chartConfigAltitude = {
   altitude: {
@@ -122,6 +123,14 @@ export default function Live() {
     return () => clearInterval(interval);
   }, []);
 
+  const Map = useMemo(() => dynamic(
+    () => import("@/components/ui/map").then((mod) => mod.Map),
+    { 
+      loading: () => <p>A map is loading</p>,
+      ssr: false
+    }
+  ), [])
+
   return (
     <div>
       <div className="flex items-center justify-center">
@@ -163,7 +172,7 @@ export default function Live() {
         <div className="flex flex-wrap items-center justify-center">
           <ChartCard
             title="Altitude"
-            description="The height of the cansat over time."
+            description="The height in metres."
             dataKey="altitude"
             chartConfig={chartConfigAltitude}
             loading={loading}
@@ -171,7 +180,7 @@ export default function Live() {
           />
           <ChartCard
             title="Temperature"
-            description="The temperature over time."
+            description="The temperature in degrees Celcius."
             dataKey="temperature"
             chartConfig={chartConfigTemperature}
             loading={loading}
@@ -179,15 +188,15 @@ export default function Live() {
           />
           <ChartCard
             title="Humidity"
-            description="The humidity in percent over time."
+            description="The humidity in percent."
             dataKey="humidity"
             chartConfig={chartConfigHumidity}
             loading={loading}
             latestData={latestData}
           />
           <ChartCard
-            title="CO2 PPM"
-            description="The carbon dioxide levels over time."
+            title="CO2"
+            description="The carbon dioxide in ppm."
             dataKey="co2_ppm"
             chartConfig={chartConfigCO2}
             loading={loading}
@@ -195,20 +204,13 @@ export default function Live() {
           />
           <ChartCard
             title="Air Pressure"
-            description="The air pressure over time."
+            description="The air pressure in hPa."
             dataKey="air_pressure"
             chartConfig={chartConfigAirPressure}
             loading={loading}
             latestData={latestData}
           />
-          <ChartCard
-            title="Air Quality Index"
-            description="The air quality index over time."
-            dataKey="air_quality_index"
-            chartConfig={chartConfigAirQualityIndex}
-            loading={loading}
-            latestData={latestData}
-          />
+          <Map />
         </div>
         <div className="flex justify-center mb-4">
           <p className="text-muted-foreground">
