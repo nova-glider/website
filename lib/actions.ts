@@ -29,12 +29,12 @@ export async function getLatestData() {
     temperature: point.readings.temperature_celsius,
     humidity: point.readings.humidity_percent,
     air_pressure: point.readings.air_pressure_hpa,
-    co2_ppm: point.readings.co2_ppm,
-    air_quality_index: point.readings.air_quality_index,
+    latitude: point.location.latitude,
+    longitude: point.location.longitude,
   }));
 
   dataToShow.sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 
   return dataToShow;

@@ -20,6 +20,8 @@ import path from "path";
 export interface SensorData {
   timestamp: string;
   location: {
+    longitude: number;
+    latitude: number;
     altitude: number;
   };
   readings: {

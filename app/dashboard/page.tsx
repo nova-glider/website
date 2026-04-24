@@ -16,7 +16,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Info } from "lucide-react";
 import { readTimeStamp } from "@/lib/utils";
@@ -35,6 +35,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import dynamic from "next/dynamic";
 
 const chartConfigAltitude = {
   altitude: {
@@ -122,6 +123,14 @@ export default function Live() {
     return () => clearInterval(interval);
   }, []);
 
+  const Map = useMemo(() => dynamic(
+    () => import("@/components/ui/map").then((mod) => mod.Map),
+    { 
+      loading: () => <p>A map is loading</p>,
+      ssr: false
+    }
+  ), [])
+
   return (
     <div>
       <div className="flex items-center justify-center">
@@ -201,14 +210,7 @@ export default function Live() {
             loading={loading}
             latestData={latestData}
           />
-          <ChartCard
-            title="Air Quality Index"
-            description="The air quality index over time."
-            dataKey="air_quality_index"
-            chartConfig={chartConfigAirQualityIndex}
-            loading={loading}
-            latestData={latestData}
-          />
+          <Map />
         </div>
         <div className="flex justify-center mb-4">
           <p className="text-muted-foreground">
