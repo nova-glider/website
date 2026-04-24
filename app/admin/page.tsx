@@ -47,7 +47,7 @@ export default function AdminPanel() {
 
       if (response.ok) {
         setIsAuthenticated(true);
-        setPassword("");
+        // setPassword(""); // lets reuse the password in our requests, shall we
         toast.success("Admin access granted");
       } else {
         setError("Invalid password");
